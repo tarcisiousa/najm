@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-64">
+   <div class=" border-2 border-blue-800 rounded-lg mt-14">
+      <div class=" m-2 mt-4 mb-3 rounded-lg ">
+         <form method="POST" action="{% url 'agendas_delete' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
+           {% csrf_token %}
+           <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+            <div class="border-2 border-blue-800 mr-2 rounded-lg">
+                <div class="flex w-full rounded-lg">
+                    <span class="w-full inline-flex items-center px-3 py-2 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-t-lg">
+                      <label class="text-white font-bold">DETALHES DO AGENDAMENTO:</label>
+                    </span>
+                </div>
+                <div class="flex w-full py-2 px-2 mt-3">
+                    <span class="w-full inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">Protocolo:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
+                        {{object.protocol}}
+                    </div>
+                </div>
+                <div class="flex w-full  py-2 px-2">
+                    <span class="w-full inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">Requerido:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
+                        {{object.id_assisted}}
+                    </div>
+                </div>
+                <div class="flex w-full  py-2 px-2">
+                    <span class="w-full inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">Data:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
+                        {{object.date_at}}
+                    </div>
+                    <span class="w-full ml-4 inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">Hora:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
+                        {{object.time_at}}
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'agendas_list' %}" class="m-2 mt-4 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
+                Voltar
+            </a>
+            <a href="{% url 'agendas_delete' pk=object.pk %}" class="m-2 mt-4 font-md rounded-md bg-red-500 hover:bg-red-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
+                Exluir
+            </a>
+         </form>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

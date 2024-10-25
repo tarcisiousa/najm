@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class="p-4 border-2 border-slate-400 rounded-lg mt-14 drop-shadow-lg ">
+        <div class="rounded-md mb-8 ">
+            <div class="container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                <!-- Primeiro bloco -->
+                 <div class="flex flex-col justify-between p-3 h-32 rounded-lg bg-gradient-to-r from-teal-500 to-teal-700 drop-shadow-lg ">
+                    <div class="flex items-center">
+                         <div class="bg-teal-600 rounded-full h-12 w-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
+                              <path fill-rule="evenodd" d="M8.25 6.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM15.75 9.75a3 3 0 1 1 6 0 3 3 0 0 1-6 0ZM2.25 9.75a3 3 0 1 1 6 0 3 3 0 0 1-6 0ZM6.31 15.117A6.745 6.745 0 0 1 12 12a6.745 6.745 0 0 1 6.709 7.498.75.75 0 0 1-.372.568A12.696 12.696 0 0 1 12 21.75c-2.305 0-4.47-.612-6.337-1.684a.75.75 0 0 1-.372-.568 6.787 6.787 0 0 1 1.019-4.38Z" clip-rule="evenodd" />
+                              <path d="M5.082 14.254a8.287 8.287 0 0 0-1.308 5.135 9.687 9.687 0 0 1-1.764-.44l-.115-.04a.563.563 0 0 1-.373-.487l-.01-.121a3.75 3.75 0 0 1 3.57-4.047ZM20.226 19.389a8.287 8.287 0 0 0-1.308-5.135 3.75 3.75 0 0 1 3.57 4.047l-.01.121a.563.563 0 0 1-.373.486l-.115.04c-.567.2-1.156.349-1.764.441Z" />
+                            </svg>
+                         </div>
+                         <div class="ml-4">
+                            <p class="text-white font-bold text-xl">Atendimentos</p>
+                            <p class="text-teal-200 text-sm">Mensal</p>
+                         </div>
+                    </div>
+                    <p class="text-teal-300 font-medium text-lg">Total: {{agendas_count}}</p>
+                </div>
+                 <div class="flex flex-col justify-between p-3 h-32 rounded-lg bg-gradient-to-r from-red-500 to-red-700 drop-shadow-lg">
+                    <div class="flex items-center">
+                        <div class="bg-red-600 rounded-full h-12 w-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-white size-6">
+                              <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-2.625 6c-.54 0-.828.419-.936.634a1.96 1.96 0 0 0-.189.866c0 .298.059.605.189.866.108.215.395.634.936.634.54 0 .828-.419.936-.634.13-.26.189-.568.189-.866 0-.298-.059-.605-.189-.866-.108-.215-.395-.634-.936-.634Zm4.314.634c.108-.215.395-.634.936-.634.54 0 .828.419.936.634.13.26.189.568.189.866 0 .298-.059.605-.189.866-.108.215-.395.634-.936.634-.54 0-.828-.419-.936-.634a1.96 1.96 0 0 1-.189-.866c0-.298.059-.605.189-.866Zm2.023 6.828a.75.75 0 1 0-1.06-1.06 3.75 3.75 0 0 1-5.304 0 .75.75 0 0 0-1.06 1.06 5.25 5.25 0 0 0 7.424 0Z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-white font-bold text-xl">Cadastros</p>
+                            <p class="text-red-200 text-sm">Mensal</p>
+                        </div>
+                    </div>
+                    <p class="text-red-300 font-medium text-lg">Total: {{register_count}}</p>
+                </div>
+                <!-- Segundo bloco -->
+                <div class="flex flex-col justify-between p-3 h-32 rounded-lg bg-gradient-to-r from-blue-600 to-blue-800 drop-shadow-lg">
+                    <div class="flex items-center">
+                        <div class="bg-blue-500 rounded-full h-12 w-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
+                              <path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
+                              <path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
+                              <path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-white font-bold text-xl">Processos</p>
+                            <p class="text-teal-200 text-sm">Geral</p>
+                        </div>
+                    </div>
+                    {% if process_count %}
+                        <p class="text-blue-300 font-medium text-lg">Total: {{process_count}}</p>
+                    {%else%}
+                        <p class="text-blue-300 font-medium text-lg">Total: 0</p>
+                    {%endif%}
+                </div>
+                <!-- Terceiro bloco -->
+                <div class="flex flex-col justify-between p-3 h-32 rounded-lg bg-gradient-to-r from-green-400 to-green-600 drop-shadow-lg">
+                    <div class="flex items-center">
+                        <div class="bg-green-500 rounded-full h-12 w-12 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-white size-6">
+                              <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clip-rule="evenodd" />
+                              <path fill-rule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375Zm9.586 4.594a.75.75 0 0 0-1.172-.938l-2.476 3.096-.908-.907a.75.75 0 0 0-1.06 1.06l1.5 1.5a.75.75 0 0 0 1.116-.062l3-3.75Z" clip-rule="evenodd" />
+                            </svg>
+
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-white font-bold text-xl">Processos Encerrados</p>
+                            <p class="text-green-200 text-sm">Geral</p>
+                        </div>
+                    </div>
+                    {% if processes_finish_count %}
+                        <p class="text-green-300 font-medium text-lg">Total: {{processes_finish_count}}</p>
+                    {%else%}
+                        <p class="text-green-300 font-medium text-lg">Total: 0</p>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid rounded-md mb-8 ">
+            <div class=" h-8 flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-md">
+               <div class="">
+                   <label class="w-full block ml-3 text 2xl font-medium text-white font-medium ">Agenda do dia!</label>
+               </div>
+            </div>
+            {% if notes %}
+            <div class="mb-2 mt-2 container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 border-slate-300 rounded-md">
+                {% for note in notes%}
+                    {% if note.priority == 'Baixa' %}
+                    <div class="flex flex-col justify-between h-44 rounded-lg bg-gradient-to-r from-green-500 to-green-600 drop-shadow-lg m-1 mt-2 mb-2 transition-transform duration-300 hover:scale-105">
+                    <div class="w-full text-center text-white font-medium rounded-t-lg border-b-2 border-slate-300 bg-green-700">
+                        Prioridade: {{note.priority}}</div>
+                    {% elif note.priority == 'Média' %}
+                    <div class="flex flex-col justify-between h-44 rounded-lg bg-gradient-to-r from-orange-400 to-orange-500 drop-shadow-lg m-1 mt-2 mb-2 transition-transform duration-300 hover:scale-105">
+                    <div class="w-full text-center text-white font-medium rounded-t-lg border-b-2 border-slate-300 bg-orange-600">
+                        Prioridade: {{note.priority}}</div>
+                    {%else%}
+                    <div class="flex flex-col justify-between h-44 rounded-lg bg-gradient-to-r from-red-500 to-red-600 drop-shadow-lg m-1 mt-2 mb-2 transition-transform duration-300 hover:scale-105">
+                    <div class="w-full text-center text-white font-medium rounded-t-lg border-b-2 border-slate-300 bg-red-600">
+                        Prioridade: {{note.priority}}</div>
+                    {%endif%}
+                        <div class="flex items-center p-2">
+                            <div class=" rounded-sm h-20 w-10 flex items-center justify-center">
+                                <a href="{% url 'notes_detail' pk=note.pk %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="text-white size-6">
+                                      <path d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
+                                      <path fill-rule="evenodd" d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            </div>
+                            <div class="ml-2">
+                                <a href="{% url 'notes_detail' pk=note.pk %}" class="uppercase text-white text-xs font-bold ">{{note.user}}</a>
+                                <p class="text-slate-100 text-xs">Assunto: {{note.subject}}</p>
+                            </div>
+                        </div>
+                        {% if note.status == '0'%}
+                        <div class="ml-11 mb-1">
+                            <p class="text-slate-100 font-bold">{{note.date_at}}</p>
+                            <p class="text-slate-100 text-xs font-bold">Hora: {{note.time_at}}</p>
+                        </div>
+                        {%else%}
+                        <div class="ml-11 ">
+                            <p class="text-yellow-400 font-bold">Lembrete Finalizado</p>
+                        </div>
+                        {%endif%}
+
+                        <div class="w-full flex ">
+                            <form class="w-full flex" method="POST" action="{% url 'home_list' %}">
+                                {% csrf_token %}
+                                <div class="w-full flex text-center">
+                                    {% if note.priority == 'Baixa' %}
+                                        <a href="{% url 'notes_detail' pk=note.pk %}" class="w-full border-t-2 border-slate-300 rounded-b-lg font-md bg-green-500 hover:bg-green-600 text-xs text-white hover:text-gray-200 font-bold px-4 py-1">
+                                            Mais detalhes...
+                                        </a>
+                                    {% elif note.priority == 'Média' %}
+                                        <a href="{% url 'notes_detail' pk=note.pk %}" class="w-full border-t-2 -slate-300 rounded-b-lg font-md bg-orange-400 hover:bg-orange-500 text-xs text-white hover:text-gray-200 font-bold px-4 py-1">
+                                            Mais detalhes...
+                                        </a>
+                                    {%else%}
+                                        <a href="{% url 'notes_detail' pk=note.pk %}" class="w-full border-t-2 border-slate-300 rounded-b-lg font-md bg-red-500 hover:bg-red-600 text-xs text-white hover:text-gray-200 font-bold px-4 py-1">
+                                            Mais detalhes...
+                                        </a>
+                                    {%endif%}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {%endfor%}
+            </div>
+            {%else%}
+                <div class="border-2 border-slate-300 text-center text-xl text-slate-400 items-center font-medium rounded-md mt-2 py-4">
+                    Nenhum compromisso para hoje...
+                </div>
+            {%endif%}
+        </div>
+        <!--
+        <div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
+            <p class="text-2xl text-gray-400 dark:text-gray-500">
+                <div class="h-26 m-1 border-2 border-orange-600 rounded-lg">
+                      <canvas id="barChart" ></canvas>
+                </div>
+            </p>
+        </div>
+        -->
+   </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+        var ctx = document.getElementById('barChart').getContext('2d');
+        var candidates = {{ ls_candidates|safe }};
+        var values = {{ ls_scores|safe }};
+
+        var chart = new Chart(ctx, {
+            type: 'bar',  // Altere o tipo de gráfico para 'bar'
+            data: {
+                labels: candidates,
+                datasets: [{
+                    label: 'QUANTIDADE DE VOTOS',
+                    data: values,
+                    backgroundColor: [
+                        'rgba(252, 161, 3, 0.9)',
+                        'rgba(3, 252, 107, 0.9)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',  // Configuração para barras horizontais
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

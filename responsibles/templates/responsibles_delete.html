@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-blue-800 rounded-lg mt-14">
+       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
+           <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Deletar responsável</label>
+           </div>
+      </div>
+      <div class=" ml-2 mt-4 mb-3 rounded-lg ">
+         <!--<form method="POST" action="{% url 'responsibles_update_unic' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
+           {% csrf_token %}-->
+           <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+            <div class="mr-2 rounded-lg">
+                <div class="flex w-full rounded-lg">
+                    <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                      <label class="text-blue-400 font-bold">DADOS PESSOAIS DO RESPONSÁVEL:</label>
+                    </span>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Requerente:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">Grau de Parentesco:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.id_assisted}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.kin}}</div>
+                    </div>
+                </div>
+
+                <div class="w-full mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Nome:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.name}}</div>
+                    </div>
+                </div>
+                <div class="w-full mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Estado civil:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                            <label class="text-slate-600 font-bold">RG:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600  ml-2">
+                            <label class="text-slate-600 font-bold">Orgão Expedidor:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.status_civil}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.rg}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.organ}}</div>
+                    </div>
+                </div>
+                <div class="w-full mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">NIT:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                            <label class="text-slate-600 font-bold">CPF:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600  ml-2">
+                            <label class="text-slate-600 font-bold">E-mail:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.nit}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.cpf}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.email}}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'responsibles_list' %}" class="m-2 mt-4 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2  transition-transform duration-300 hover:scale-105">
+                  Voltar
+            </a>
+            <input type="submit" value="Deletar" id="open-modal-button" class="m-2 mt-4 font-md rounded-md bg-red-500 hover:bg-red-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2  transition-transform duration-300 hover:scale-105">
+         <!-- </form> -->
+      </div>
+   </div>
+</div>
+
+<div id="static-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-lg bg-white rounded-lg shadow-xl">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <h3 class="text-lg font-semibold text-gray-900">
+                Excluir Responsável
+            </h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" data-modal-hide="static-modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Modal body -->
+        <div class="py-6 text-center">
+            <p class="text-base leading-relaxed text-gray-700">
+                Tem certeza de que deseja excluir o responsável selecionado?
+            </p>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="flex justify-center space-x-4 border-t pt-4">
+            <form method="POST" action="{% url 'responsibles_delete' pk=object.pk %}">
+                {% csrf_token %}
+                <input type="hidden" value="{{object.id}}" name="id_assisted">
+                <input type="submit" value="Sim" class="w-full sm:w-auto px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  transition-transform duration-300 hover:scale-105">
+            </form>
+            <button data-modal-hide="static-modal" type="button" class="w-full sm:w-auto px-6 py-3 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm  transition-transform duration-300 hover:scale-105">
+                Não
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const openModalButton = document.getElementById('open-modal-button');
+        const modal = document.getElementById('static-modal');
+        const closeModalButtons = modal.querySelectorAll('[data-modal-hide="static-modal"]');
+
+        openModalButton.addEventListener('click', function () {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                modal.classList.add('hidden');
+            });
+        });
+    });
+</script>
+
+{% endblock %}

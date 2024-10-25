@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-slate-400 rounded-lg mt-14 mb-10">
+      <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
+           <div class="bg-blue-500 border-blue-500 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Adicionar requerente</label>
+           </div>
+      </div>
+      <div class=" mr-2 mt-4 mb-3 rounded-lg ">
+          <form method="post" class="m-2 w-full mt-2">
+             {% csrf_token %}
+            <div class="flex w-full">
+             <span class="inline-flex items-center px-3 text-sm text-gray-600 bg-blue-500 border border-e-0 border-gray-100 rounded-s-md">
+               <svg class="w-4 h-4 text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                 <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+               </svg>
+             </span>
+             <input name="search-assisted" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-100 text-gray-600 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm " placeholder="CPF do Assistido...">
+             <button type="submit" class="font-md rounded-md bg-blue-500 hover:bg-blue-600 text-gray-100 hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                  Pesquisar
+             </button>
+            </div>
+          </form>
+      </div>
+
+      <div class=" mr-2 mt-4 mb-3 rounded-lg ">
+         <form method="POST" action="{% url 'assisteds_update_search' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
+           {% csrf_token %}
+           <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+
+            <div class="mr-2 rounded-lg">
+                <div class="flex w-full rounded-lg">
+                    <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                      <label class="text-blue-400 font-bold">DADOS PESSOAIS DO REQUERENTE:</label>
+                    </span>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">PARTE:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">CONDIÇÃO:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6">{{form.party}}</div>
+                        <div class="w-full mr-2">
+                            <select id="id_condition" name="condition" class="ml-2 mt-1 h-6 rounded-none w-full px-2 rounded-l-md rounded-r-md bg-gray-50 border border-blue-800 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm">
+                                <option value="capaz">Capaz</option>
+                                <option value="incapaz">Incapaz</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="form-capaz" class="hidden">
+                    <div class="w-full mt-1 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Nome:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6">{{form.name}}</div>
+                        </div>
+                    </div>
+                    <div class="w-full mt-1 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Estado civil:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">RG:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600  ml-2">
+                                <label class="text-slate-600 font-bold">Orgão Expedidor:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6">{{form.status_civil}}</div>
+                            <div class="w-full h-6 ml-2">{{form.rg}}</div>
+                            <div class="w-full h-6 ml-2">{{form.organ}}</div>
+                        </div>
+                    </div>
+                    <div class="w-full mt-1 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">NIS:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">CPF:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600  ml-2">
+                                <label class="text-slate-600 font-bold">E-mail:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6">{{form.nis}}</div>
+                            <div class="w-full h-6 ml-2">{{form.cpf}}</div>
+                            <div class="w-full h-6 ml-2">{{form.email}}</div>
+                        </div>
+                    </div>
+                    <div class="w-full  flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Data de Expedição:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">Data de Nascimento:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6">{{form.date_expedition}}</div>
+                            <div class="w-full h-6 ml-2">{{form.date_birth}}</div>
+                        </div>
+                    </div>
+                    <div class="w-full mt-1 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Telefone Principal:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">Telefone Secundário:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6">{{form.fone_1}}</div>
+                            <div class="w-full h-6 ml-2">{{form.fone_2}}</div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex w-full rounded-lg">
+                            <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                              <label class="text-blue-400 font-bold">ENDEREÇO:</label>
+                            </span>
+                        </div>
+                        <div class="w-full mt-2 flex flex-col items-center">
+                            <div class="flex container-fluid w-full items-center">
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                    <label class="text-slate-600 font-bold">Endereço:</label>
+                                </span>
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                    <label class="text-slate-600 font-bold">Bairro:</label>
+                                </span>
+                            </div>
+                            <div class="container-fluid flex w-full items-center">
+                                <div class="w-full h-6">{{form.address}}</div>
+                                <div class="w-full h-6 ml-2">{{form.district}}</div>
+                            </div>
+                        </div>
+                        <div class="w-full flex flex-col items-center">
+                            <div class="flex container-fluid w-full items-center">
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                    <label class="text-slate-600 font-bold">Cidade:</label>
+                                </span>
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                    <label class="text-slate-600 font-bold">UF:</label>
+                                </span>
+                            </div>
+                            <div class="container-fluid flex w-full items-center">
+                                <div class="w-full h-6">{{form.city}}</div>
+                                <div class="w-full h-6 ml-2">{{form.uf}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex w-full rounded-lg">
+                            <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                              <label class="text-blue-400 font-bold">FILIAÇÃO:</label>
+                            </span>
+                        </div>
+                        <div class="w-full mt-2 flex flex-col items-center">
+                            <div class="flex container-fluid w-full items-center">
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                    <label class="text-slate-600 font-bold">Pai:</label>
+                                </span>
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                    <label class="text-slate-600 font-bold">Mãe:</label>
+                                </span>
+                            </div>
+                            <div class="container-fluid flex w-full items-center">
+                                <div class="w-full h-6">{{form.dad}}</div>
+                                <div class="w-full h-6 ml-2">{{form.mother}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="flex w-full rounded-lg">
+                            <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                              <label class="text-blue-400 font-bold">RENDIMENTOS:</label>
+                            </span>
+                        </div>
+                        <div class="w-full mt-2 flex flex-col items-center">
+                            <div class="flex container-fluid w-full items-center">
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                    <label class="text-slate-600 font-bold">Empregado:</label>
+                                </span>
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                    <label class="text-slate-600 font-bold">Salário:</label>
+                                </span>
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                    <label class="text-slate-600 font-bold">Outros Rendimentos:</label>
+                                </span>
+                            </div>
+                            <div class="container-fluid flex w-full items-center">
+                                <div class="w-full h-6">{{form.employee}}</div>
+                                <div class="w-full h-6 ml-2">{{form.salary}}</div>
+                                <div class="w-full h-6 ml-2">{{form.other_income}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="flex w-full rounded-lg">
+                            <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                              <label class="text-blue-400 font-bold">OUTROS:</label>
+                            </span>
+                        </div>
+                        <div class="w-full mt-2 flex flex-col items-center">
+                            <div class="flex container-fluid w-full items-center">
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                    <label class="text-slate-600 font-bold">Nº de Dependentes:</label>
+                                </span>
+                                <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                    <label class="text-slate-600 font-bold">Moradia:</label>
+                                </span>
+                            </div>
+                            <div class="container-fluid flex w-full items-center">
+                                <div class="w-full h-6">{{form.dependents}}</div>
+                                <div class="w-full h-6 ml-2">{{form.house}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="form-incapaz" class="hidden"></div>
+                </div>
+            </div>
+            <div class="mt-4 flex border-t-2 border-slate-500 mr-2">
+                <a href="{% url 'assisteds_list' %}" class="m-2 mt-4 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                  Voltar
+                </a>
+                <input type="submit" value="Cadastrar" class="m-2 mt-4 font-md rounded-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+
+<!-- Modal de Erro -->
+<div id="info-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-lg bg-white rounded-lg shadow-xl dark:bg-gray-800">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <h3 class="text-lg font-semibold text-gray-600">
+                Protocolo Gerado
+            </h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" data-modal-hide="info-modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="py-6 text-center">
+            <p class="text-base leading-relaxed text-gray-700">
+                {{ info_message }}
+            </p>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="flex justify-center space-x-4 border-t pt-4">
+            <button data-modal-hide="info-modal" type="button" class="w-full sm:w-auto px-6 py-3 text-slate-600 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm transition-transform duration-300 hover:scale-105">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const infoModal = document.getElementById('info-modal');
+        const infoMessage = "{{ info_message }}";  // Obtém a mensagem passada pelo Django
+
+        // Verifica se existe uma mensagem e exibe o modal
+        if (infoMessage && infoMessage.trim() !== '') {
+            infoModal.classList.remove('hidden');
+        }
+
+        // Fechar o modal
+        const closeErrorModalButtons = infoModal.querySelectorAll('[data-modal-hide="info-modal"]');
+        closeErrorModalButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                infoModal.classList.add('hidden');
+            });
+        });
+    });
+
+</script>
+
+
+<!-- Capaz e Incapaz -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const conditionField = document.getElementById('id_condition');  // Substitua 'id_condition' pelo id real do campo
+
+        const formCapaz = document.getElementById('form-capaz');
+        const formIncapaz = document.getElementById('form-incapaz');
+
+        // Função para exibir/ocultar formulários com base na seleção
+        function toggleForms() {
+            const selectedValue = conditionField.value;
+
+            if (selectedValue === 'capaz') {
+                formCapaz.classList.remove('hidden');
+                formIncapaz.classList.add('hidden');
+            } else if (selectedValue === 'incapaz') {
+                formCapaz.classList.add('hidden');
+                formIncapaz.classList.remove('hidden');
+
+                // Redirecionar para outro template
+                window.location.href = '/assisteds/create/incapaz/';
+            } else {
+                formCapaz.classList.add('hidden');
+            }
+        }
+
+        // Executa a função no carregamento da página (para manter o estado correto ao recarregar)
+        toggleForms();
+
+        // Adiciona o event listener para alterar os formulários quando o valor mudar
+        conditionField.addEventListener('change', toggleForms);
+    });
+
+</script>
+
+<!-- Modal de Erro -->
+<div id="error-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-lg bg-white rounded-lg shadow-xl dark:bg-gray-800">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <h3 class="text-lg font-semibold text-gray-600">
+                Erro
+            </h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" data-modal-hide="error-modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="py-6 text-center">
+            <p class="text-base leading-relaxed text-gray-700">
+                {{ error_message }}
+            </p>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="flex justify-center space-x-4 border-t pt-4">
+            <a href="{% url 'assisteds_create' %}" data-modal-hide="error-modal" type="button" class="w-full sm:w-auto px-6 py-3 text-slate-600 bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm">
+                Fechar
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const errorModal = document.getElementById('error-modal');
+        const closeErrorModalButtons = errorModal.querySelectorAll('[data-modal-hide="error-modal"]');
+
+        closeErrorModalButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                errorModal.classList.add('hidden');
+            });
+        });
+
+        // Exibir modal de erro se houver mensagem de erro
+        const errorMessage = '{{ error_message|escapejs }}';  // Passa a variável do Django para o JavaScript
+        if (errorMessage) {
+            errorModal.classList.remove('hidden');
+        }
+    });
+</script>
+
+{% endblock %}

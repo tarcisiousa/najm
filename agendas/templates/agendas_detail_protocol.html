@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-64">
+   <div class=" border-2 border-blue-800 rounded-lg mt-14">
+      <div class=" m-2 mt-4 mb-3 rounded-lg ">
+
+            <div class="border-2 border-blue-800 mr-2 rounded-lg">
+                <div class="flex w-full rounded-lg">
+                    <span class="w-full inline-flex items-center px-3 py-2 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-t-lg">
+                      <label class="text-white font-bold text-base">
+                          ATENDIMENTO PARA:
+                          <label class="text-gray-100 font-bold text-base">
+                              {{object.id_assisted}}
+                          </label>
+                      </label>
+                    </span>
+                </div>
+                <div class="flex w-full py-2 px-2 mt-10 mb-10">
+                    <div class="w-full font-bolt text-5xl font-medium flex items-center justify-center">
+                        Protocolo:
+                        <label class="ml-4 text-5xl text-blue-700 font-bold">{{object.protocol}}</label>
+                    </div>
+
+                </div>
+            </div>
+             <!--
+            <input type="submit" value="Cadastrar" class="m-2 font-md rounded-md bg-blue-800 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
+            -->
+         </form>
+      </div>
+   </div>
+</div>
+
+{% endblock %}
