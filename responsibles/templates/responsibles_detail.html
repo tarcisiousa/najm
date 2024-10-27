@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-blue-400 rounded-lg mt-14 mb-10">
+       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
+           <div class="bg-blue-500 border-blue-500 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Detalhes do responsável</label>
+           </div>
+      </div>
+      <div class=" mr-2 mt-4 mb-3 rounded-lg ">
+         <form method="POST" action="{% url 'responsibles_update' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
+           {% csrf_token %}
+           <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+            <div class="mr-2 rounded-lg">
+                <div class="flex w-full rounded-lg">
+                    <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-400">
+                      <label class="text-blue-400 font-bold">DADOS PESSOAIS DO RESPONSÁVEL:</label>
+                    </span>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">PARTE:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">CONDIÇÃO:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.party}}</div>
+                        <div class="w-full h-6 px-2 border-1 rounded-md ml-2">
+                            {{object.party}}
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full  flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Nome:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.name}}</div>
+                    </div>
+                </div>
+                <div class="w-full  flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Estado civil:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                            <label class="text-slate-600 font-bold">RG:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600  ml-2">
+                            <label class="text-slate-600 font-bold">Orgão Expedidor:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.status_civil}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.rg}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.organ}}</div>
+                    </div>
+                </div>
+                <div class="w-full  flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">NIS:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                            <label class="text-slate-600 font-bold">CPF:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600  ml-2">
+                            <label class="text-slate-600 font-bold">E-mail:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.nis}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.cpf}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.email}}</div>
+                    </div>
+                </div>
+                <div class="w-full  flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Data de Expedição:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                            <label class="text-slate-600 font-bold">Data de Nascimento:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.date_expedition}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.date_birth}}</div>
+                    </div>
+                </div>
+                <div class="w-full  flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Telefone Principal:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                            <label class="text-slate-600 font-bold">Telefone Secundário:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="w-full h-6 px-2 border-1 rounded-md">{{object.fone_1}}</div>
+                        <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.fone_2}}</div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-400">
+                          <label class="text-blue-400 font-bold">ENDEREÇO:</label>
+                        </span>
+                    </div>
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Endereço:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">Bairro:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{object.address}}</div>
+                            <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.district}}</div>
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Cidade:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">UF:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{object.city}}</div>
+                            <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.uf}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-400">
+                          <label class="text-blue-400 font-bold">FILIAÇÃO:</label>
+                        </span>
+                    </div>
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Pai:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">Mãe:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{object.dad}}</div>
+                            <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.mother}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-400">
+                          <label class="text-blue-400 font-bold">RENDIMENTOS:</label>
+                        </span>
+                    </div>
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Empregado:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">Salário:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">Outros Rendimentos:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{object.employee}}</div>
+                            <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.salary}}</div>
+                            <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.other_income}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-400">
+                          <label class="text-blue-400 font-bold">OUTROS:</label>
+                        </span>
+                    </div>
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Nº de Dependentes:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600 ml-2">
+                                <label class="text-slate-600 font-bold">Moradia:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{object.dependents}}</div>
+                            <div class="w-full h-6 ml-2 px-2 border-1 rounded-md">{{object.house}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex">
+                <a href="{% url 'responsibles_list' %}" class="m-2 mt-4 font-md rounded-r-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                      Voltar
+                </a>
+                <a href="{% url 'responsibles_delete' pk=object.pk%}" class="m-2 mt-4 font-md rounded-r-md bg-red-500 hover:bg-red-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                    Excluir
+                </a>
+                <a href="{% url 'responsibles_update' pk=object.pk%}" class="m-2 mt-4 font-md rounded-r-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                    Editar
+                </a>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

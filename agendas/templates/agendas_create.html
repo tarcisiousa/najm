@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="p-4 sm:ml-48">
+    <div class="container-fluid border-2 border-blue-800 rounded-lg mt-14" style="min-height: 100vh;">
+        <div class=" mt-4 mb-3 rounded-lg ">
+            <form method="POST" action="{% url 'assisteds_create' %}" enctype="multipart/form-data" class=" w-full">
+            {% csrf_token %}
+                <div class="container-fluid flex">
+                    <div class="h-96 w-full border-2 border-blue-400 rounded-lg">
+                        <div class="h-full w-full p-2" id='calendar'></div>
+                    </div>
+                </div>
+                <div class="container-fluid w-full mt-2">
+                    <label for="date-input" class="mt-2 ml-2 text-blue-600 font-medium">Data Selecionada:</label>
+                    <input class="text-blue-800 rounded-md mt-2" type="text" id="date-input" readonly>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var inputDate = document.getElementById('date-input'); // Campo input
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',  // Visualização em grade mensal
+            locale: 'pt-br',  // Definir idioma
+            events: '/eventos_view/',  // URL para pegar eventos
+            dateClick: function(info) {
+                inputDate.value = info.dateStr; // Preencher o campo input com a data clicada
+            },
+            eventContent: function(info) {
+                // Criar um elemento div para conter o conteúdo do evento
+                let eventDiv = document.createElement('div');
+
+                // Definir o título
+                let title = document.createElement('div');
+                title.innerHTML = info.event.title;
+                eventDiv.appendChild(title);
+
+                // Adicionar a descrição com horários (permitindo HTML)
+                let description = document.createElement('div');
+                description.innerHTML = info.event.extendedProps.description;
+                eventDiv.appendChild(description);
+
+                return { domNodes: [eventDiv] };
+            }
+        });
+
+        calendar.render();
+    });
+
+
+</script>
+{% endblock %}

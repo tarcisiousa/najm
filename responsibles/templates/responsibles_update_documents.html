@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-slate-400 rounded-lg mt-14 mb-10">
+      <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
+           <div class="bg-blue-500 border-blue-500 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Documentos</label>
+           </div>
+      </div>
+      <div class=" mr-2 mt-4 mb-3 rounded-lg ">
+           {% csrf_token %}
+           <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+            <div class="ml-2 rounded-lg">
+                {% if documents %}
+                <div class="flex w-full rounded-lg mb-3">
+                    <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                      <label class="text-blue-400 font-bold">Documentos Presentes:</label>
+                    </span>
+                </div>
+                <form method="POST" action="{% url 'responsibles_update_documents' pk=object.pk%}" class="container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 mb-4">
+                    {% csrf_token %}
+                    {% for document in documents %}
+                        <div class="flex flex-col justify-between inline-flex items-center mt-2 mb-2">
+                            <span class="w-full  h-10 inline-flex items-center px-2 text-sm text-gray-600 border-2 border-gray-400 rounded-md bg-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-green-800">
+                                  <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+                                </svg>
+                                <div class="w-full inline-flex items-center px-2 text-gray-600 font-medium">
+                                     {{ document.name_customize|truncatechars:25 }}
+                                </div>
+                                <input type="hidden" name="id_responsible" value="{{object.pk}}">
+                                <button type="submit" name="delete-document" value="{{document.pk}}" class="flex bg-red-500 hover:bg-red-600  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                    <i class="bi bi-trash transition-transform duration-300 hover:scale-105"></i>
+                                </button>
+                            </span>
+                         </div>
+                    {% endfor %}
+                </form>
+                {% endif %}
+                <form method="POST" action="{% url 'responsibles_update_documents' pk=object.pk%}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                          <label class="text-blue-400 font-bold">Upload:</label>
+                        </span>
+                    </div>
+                    <div class="flex w-full mt-4">
+                        <span class="w-36 h-6 inline-flex items-center px-2 text-sm text-gray-600">
+                          <label class="text-slate-600 font-bold">Responsável:</label>
+                        </span>
+                        <label class="h-6 mt-1 rounded-none w-full px-2 rounded-l-md rounded-r-md bg-gray-50 border border-blue-800 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm mr-2">
+                            {{object.name}}
+                            <input type="hidden" name="id_responsable" value="{{object.pk}}">
+                        </label>
+                    </div>
+                    <div class="flex w-full mt-2">
+                        <span class="w-36 h-6 inline-flex items-center px-2 text-sm text-gray-600">
+                          <label class="text-slate-600 font-bold">Requerente:</label>
+                        </span>
+                        <label class="h-6 mt-1 rounded-none w-full px-2 rounded-l-md rounded-r-md bg-gray-50 border border-blue-800 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm mr-2">
+                            {{object.id_assisted}}
+                            <input type="hidden" name="id_assisted" value="{{object.id_assisted.pk}}">
+                        </label>
+                    </div>
+                    <div class="flex w-full mt-2">
+                        <span class="w-36 h-6 inline-flex items-center px-2 text-sm text-gray-600">
+                          <label class="text-slate-600 font-bold">Documento:</label>
+                        </span>
+                        {{form.type_document}}
+                    </div>
+                    <div class="flex  mt-2">
+                        <span class="w-36 h-6 inline-flex items-center px-2 text-sm text-gray-600">
+                          <label class="text-slate-600 font-bold">Nome:</label>
+                        </span>
+                        {{form.name_customize}}
+                    </div>
+                    <div class="flex inline-flex items-center  mt-2">
+                        <span class="h-6 inline-flex items-center px-2 text-sm text-gray-600">
+                          <label class="text-slate-600 font-bold">Selecionar Arquivo:</label>
+                        </span>
+                        {{form.file}}
+                    </div>
+                    <!-- Formulário do documento -->
+                    <div class="flex justify-end">
+                        <input type="submit" value="Enviar" class="m-2 flex justify-end font-md rounded-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                    </div>
+                </form>
+            </div>
+            <div class="ml-2 mt-4 flex border-t-2 border-slate-500  ">
+                <form method="post" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <input type="hidden" name="id_assisted" value="{{object.id_assisted.pk}}">
+                    <input type="hidden" name="id_responsible" value="{{object.pk}}">
+                    <input type="submit" value="Avançar" name="next" class="m-2 mt-4 font-md rounded-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                </form>
+            </div>
+      </div>
+   </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pega os elementos do form
+        const typeDocumentField = document.querySelector('[name="type_document"]');
+        const nameCustomizeField = document.querySelector('[name="name_customize"]');
+
+        // Adiciona um listener para quando o valor do campo type_document mudar
+        typeDocumentField.addEventListener('change', function() {
+            // Preenche o campo name_customize com o valor selecionado de type_document
+            nameCustomizeField.value = typeDocumentField.options[typeDocumentField.selectedIndex].text;
+        });
+    });
+</script>
+{% endblock %}

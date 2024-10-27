@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-blue-800 rounded-lg mt-14">
+       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
+           <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Excluir colaborador</label>
+           </div>
+      </div>
+      <div class=" ml-2 mt-4 mb-3 rounded-lg ">
+         <!-- <form method="POST" action="{% url 'cooperators_delete' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
+           {% csrf_token %} -->
+           <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+            <div class="border-2 border-blue-400 mr-2 rounded-lg">
+                <div class="flex w-full rounded-lg">
+                    <span class="w-full inline-flex items-center px-3 py-1 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-t-lg">
+                      <label class="text-white font-bold">Preencha os dados do Colaborador:</label>
+                    </span>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Nome:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md">{{object.name}}</div>
+                    </div>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Decreto / Matícula:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md">{{object.registration}}</div>
+                    </div>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Cargo:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">Número da Ordem:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">CPF:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md">{{object.post}}</div>
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md ml-2">{{object.number_order}}</div>
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md ml-2">{{object.cpf}}</div>
+                    </div>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">E-mail:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Telefone Principal:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">Telefone Secundário:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md">{{object.email}}</div>
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md ml-2 ">{{object.fone_1}}</div>
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md ml-2">{{object.fone_2}}</div>
+                    </div>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Endereço:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center">
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md">{{object.address}}</div>
+                    </div>
+                </div>
+                <div class="w-full  mt-2 flex flex-col items-center">
+                    <div class="flex container-fluid w-full items-center">
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold">Bairro:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">Cidade:</label>
+                        </span>
+                        <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                            <label class="text-slate-600 font-bold ml-2">UF:</label>
+                        </span>
+                    </div>
+                    <div class="container-fluid flex w-full items-center mb-3">
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md">{{object.district}}</div>
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md ml-2">{{object.city}}</div>
+                        <div class="flex items-center px-2 w-full h-6 border-2 border-slate-200 rounded-md ml-2">{{object.uf}}</div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'cooperators_list' %}" class="m-2 mt-4 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                  Voltar
+            </a>
+            <input id="open-modal-button" type="submit" value="Excluir" class="m-2 mt-4 font-md rounded-md bg-red-500 hover:bg-red-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+        <!-- </form> -->
+      </div>
+   </div>
+</div>
+
+<div id="static-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-lg bg-white rounded-lg shadow-xl dark:bg-gray-800">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <h3 class="text-lg font-semibold text-gray-900">
+                Excluir Colaborador
+            </h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" data-modal-hide="static-modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="py-6 text-center">
+            <p class="text-base leading-relaxed text-gray-700">
+                Tem certeza de que deseja excluir o colaborador selecionado?
+            </p>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="flex justify-center space-x-4 border-t pt-4">
+            <form method="POST" action="{% url 'cooperators_delete' pk=object.pk %}">
+                {% csrf_token %}
+                <input type="hidden" value="{{object.id}}" name="id_cooperator">
+                <input type="submit" value="Sim" class="w-full sm:w-auto px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm transition-transform duration-300 hover:scale-105">
+            </form>
+            <button data-modal-hide="static-modal" type="button" class="w-full sm:w-auto px-6 py-3 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm transition-transform duration-300 hover:scale-105">
+                Não
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const openModalButton = document.getElementById('open-modal-button');
+        const modal = document.getElementById('static-modal');
+        const closeModalButtons = modal.querySelectorAll('[data-modal-hide="static-modal"]');
+
+        openModalButton.addEventListener('click', function () {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                modal.classList.add('hidden');
+            });
+        });
+    });
+</script>
+
+<!-- Modal de Erro -->
+<div id="error-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-lg bg-white rounded-lg shadow-xl dark:bg-gray-800">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <h3 class="text-lg font-semibold text-gray-900">
+                Erro
+            </h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" data-modal-hide="error-modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="py-6 text-center">
+            <p class="text-base leading-relaxed text-gray-700">
+                {{ error_message }}
+            </p>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="flex justify-center space-x-4 border-t pt-4">
+            <button data-modal-hide="error-modal" type="button" class="w-full sm:w-auto px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm transition-transform duration-300 hover:scale-105">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const openModalButton = document.getElementById('open-modal-button');
+        const modal = document.getElementById('static-modal');
+        const closeModalButtons = modal.querySelectorAll('[data-modal-hide="static-modal"]');
+        const errorModal = document.getElementById('error-modal');
+        const closeErrorModalButtons = errorModal.querySelectorAll('[data-modal-hide="error-modal"]');
+
+        openModalButton.addEventListener('click', function () {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                modal.classList.add('hidden');
+            });
+        });
+
+        closeErrorModalButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                errorModal.classList.add('hidden');
+            });
+        });
+
+        // Exibir modal de erro se houver mensagem de erro
+        const errorMessage = '{{ error_message }}';
+        if (errorMessage) {
+            errorModal.classList.remove('hidden');
+        }
+    });
+</script>
+
+{% endblock %}

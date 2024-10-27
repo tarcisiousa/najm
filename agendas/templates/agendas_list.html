@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-gray-200 rounded-lg mt-14" style="min-height: 80vh;">
+       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2 ">
+           <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Agendamentos</label>
+           </div>
+      </div>
+      <div class=" m-2 mt-4 mb-3 rounded-lg ">
+          <form class=" w-full">
+             {% csrf_token %}
+                 <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+                <div class="flex w-full">
+                     <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-blue-600 border border-e-0 border-gray-300 rounded-s-md">
+                       <svg class="w-4 h-4 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                         <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                       </svg>
+                     </span>
+                     <form method="get">
+                         <input type="date" name="search-date" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-500 font-medium focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm " required>
+                     </form>
+                     <button type="submit" class="font-md rounded-md bg-blue-500 hover:bg-blue-600 text-gray-100 hover:text-gray-100 font-bold btn px-4 py-1 ml-2 transition-transform duration-300 hover:scale-105">
+                          Pesquisar
+                     </button>
+                </div>
+                <div class="w-full flex justify-end mt-2 mr-2">
+                    <a id="open-modal-button" class="flex font-md rounded-md bg-slate-500 hover:bg-slate-600 text-gray-100 hover:text-gray-100 font-bold btn px-3 py-1 ml-2 mb-2 transition-transform duration-300 hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                           <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="ms-3">Agendar Retorno</span>
+                    </a>
+                    <a href="{% url 'assisteds_create' %}" class="flex font-md rounded-md bg-green-500 hover:bg-green-600 text-gray-100 hover:text-gray-100 font-bold btn px-3 py-1 ml-2 mb-2 transition-transform duration-300 hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                          <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="ms-3">Novo Agendamento</span>
+                    </a>
+                </div>
+                <div class="text-slate-500 font-medium border-b-2 border-slate-300 ml-2 mr-2">* Atendimentos do dia!</div>
+                {% if agendas|length != 0%}
+                    <div class="container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 mb-4">
+                        {% for agenda in agendas%}
+                         {% if agenda.status == '0' %}
+                         <div class="flex flex-col justify-between h-44 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 drop-shadow-lg m-1 mt-4 mb-4 transition-transform duration-300 hover:scale-105">
+                         {%else%}
+                         <div class="flex flex-col justify-between h-44 rounded-lg bg-gradient-to-r from-slate-600 to-slate-800 drop-shadow-lg m-1 mt-4 mb-4 transition-transform duration-300 hover:scale-105">
+                         {%endif%}
+                            <div class=" flex items-center p-2">
+                                <div class=" rounded-sm h-20 w-10 flex items-center justify-center">
+                                    <a href="{% url 'agendas_detail' pk=agenda.pk %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7 text-white">
+                                          <path d="M11.644 1.59a.75.75 0 0 1 .712 0l9.75 5.25a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.712 0l-9.75-5.25a.75.75 0 0 1 0-1.32l9.75-5.25Z" />
+                                          <path d="m3.265 10.602 7.668 4.129a2.25 2.25 0 0 0 2.134 0l7.668-4.13 1.37.739a.75.75 0 0 1 0 1.32l-9.75 5.25a.75.75 0 0 1-.71 0l-9.75-5.25a.75.75 0 0 1 0-1.32l1.37-.738Z" />
+                                          <path d="m10.933 19.231-7.668-4.13-1.37.739a.75.75 0 0 0 0 1.32l9.75 5.25c.221.12.489.12.71 0l9.75-5.25a.75.75 0 0 0 0-1.32l-1.37-.738-7.668 4.13a2.25 2.25 0 0 1-2.134-.001Z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="ml-2">
+                                    <a href="{% url 'agendas_detail' pk=agenda.pk %}" class="uppercase text-white text-xs font-bold ">{{agenda.id_assisted}}</a>
+                                    <p class="text-blue-200 text-xs">Protocolo: {{agenda.protocol}}</p>
+                                </div>
+                            </div>
+                            <div class="ml-11">
+                                <p class="text-blue-200 font-bold">{{agenda.date_at}}</p>
+                                <p class="text-blue-200 text-xs font-bold">Hora: {{agenda.time_at}}</p>
+                            </div>
+                            <div class="w-full flex">
+                                {% if agenda.status == '0'%}
+                                    <form class="w-full flex" method="POST" action="{% url 'home_list' %}">
+                                        {% csrf_token %}
+                                        <div class="w-full flex text-center">
+                                            <a href="{% url 'agendas_detail' pk=agenda.pk %}" class="w-full rounded-b-lg font-md bg-orange-500 hover:bg-orange-600 text-xs text-white hover:text-gray-200 font-bold px-4 py-1">
+                                                Mais detalhes...
+                                            </a>
+                                        </div>
+                                    </form>
+                                {%else%}
+                                    <div class="w-full flex text-center">
+                                        <a href="{% url 'agendas_detail' pk=agenda.pk %}" class="w-full rounded-b-lg font-md bg-slate-500 hover:bg-slate-600 text-xs text-white hover:text-gray-200 font-bold px-4 py-1">
+                                            Atendimento realizado.
+                                        </a>
+                                    </div>
+                                {%endif%}
+                            </div>
+                        </div>
+                        {%endfor%}
+                    </div>
+                {%else%}
+                    <div class="w-full font-medium text-4xl text-center text-slate-300 border-2 border-slate-200 p-8 mb-4 rounded-lg">Não teremos agendamento hoje...</div>
+                {%endif%}
+                    </div>
+          </form>
+          <div class="text-slate-500 font-medium border-b-2 border-slate-300 ml-2 mr-2">* Atendimentos não finalizados!</div>
+          <div class=" flex items-center justify-center transition-transform duration-300 hover:scale-100 p-1">
+
+              {% if not_serveds|length != 0 %}
+              <div class="container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-1 mb-1  ">
+                 {% for not_served in not_serveds%}
+                     <div class="flex flex-col justify-between h-24 rounded-lg bg-gradient-to-r from-orange-400 to-orange-500 shadow-lg transition-transform duration-300 hover:scale-105">
+                        <label class="mt-2 ml-2 text-white text-sm font-semibold">
+                            Protocolo: {{not_served.protocol}}
+                        </label>
+                        <label class="mt-2 ml-2 text-white text-sm font-semibold">
+                            {{not_served.date_at}}
+                        </label>
+                        <label class="mt-2 ml-2 text-white text-sm font-semibold">
+                            Atendimento não realizado
+                        </label>
+                        <a href="{% url 'agendas_detail' pk=not_served.pk %}" class="w-full text-center text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-b-lg">
+                            Reagendar...
+                        </a>
+                     </div>
+                 {%endfor%}
+              </div>
+
+              {%else%}
+              <label class="w-full text-center text-slate-500 text-sm font-semibold">
+                   Agendamentos do dia...
+              </label>
+              {%endif%}
+
+          </div>
+          <div class="mb-2"></div>
+      </div>
+   </div>
+</div>
+
+<div id="static-modal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50">
+    <div class="relative p-6 w-full max-w-lg bg-white rounded-lg shadow-xl">
+        <!-- Modal header -->
+        <div class="flex items-center justify-between border-b pb-4">
+            <h3 class="text-lg font-semibold text-gray-900">
+                Agendar Retorno
+            </h3>
+            <button type="button" class="text-gray-400 hover:text-gray-600" data-modal-hide="static-modal">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal body -->
+        <form method="post" action="{% url 'agendas_list' %}">
+                {% csrf_token %}
+            <div class="py-6 text-center justify-center">
+                <p class="text-base leading-relaxed text-gray-700 font-medium">
+                    Digite o número do protocolo!
+                </p>
+                <input name="protocol" class="mt-2 h-10 w-96 text-center rounded-md bg-gray-50 border border-blue-800 text-gray-900 focus:ring-blue-500 focus:border-blue-500 text-sm">
+            </div>
+
+            <!-- Modal footer -->
+            <div class="flex justify-center space-x-4 border-t pt-4">
+                {% csrf_token %}
+                <input type="hidden" value="{{object.id}}" name="id_assisted">
+                <input type="submit" value="Avançar" class="w-full sm:w-auto px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm transition-transform duration-300 hover:scale-105">
+
+                <button data-modal-hide="static-modal" type="button" class="w-full sm:w-auto px-10 py-3 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm transition-transform duration-300 hover:scale-105">
+                    Não
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const openModalButton = document.getElementById('open-modal-button');
+        const modal = document.getElementById('static-modal');
+        const closeModalButtons = modal.querySelectorAll('[data-modal-hide="static-modal"]');
+
+        openModalButton.addEventListener('click', function () {
+            modal.classList.remove('hidden');
+        });
+
+        closeModalButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                modal.classList.add('hidden');
+            });
+        });
+    });
+</script>
+
+
+{% endblock %}

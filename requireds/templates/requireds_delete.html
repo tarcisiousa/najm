@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-blue-800 rounded-lg mt-14">
+       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
+           <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Excluir requerido</label>
+           </div>
+      </div>
+      <div class=" mr-2 mt-4 mb-3 rounded-lg ">
+         <form method="POST" action="{% url 'requireds_delete' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
+           {% csrf_token %}
+           <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+            <div class="border-2 border-blue-800 mr-2 rounded-lg">
+                <div class="flex w-full rounded-lg">
+                    <span class="w-full inline-flex items-center px-3 py-2 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-t-lg">
+                      <label class="text-white font-bold">DADOS PESSOAIS DO REQUERIDO:</label>
+                    </span>
+                </div>
+                <div class="flex w-full py-2 px-2 mt-3">
+                    <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">REQUERENTE:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.id_assisted}}
+                    </div>
+                    <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">GRAU DE PARENTESCO:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.kin}}
+                    </div>
+                </div>
+                <div class="flex w-full  py-2 px-2">
+                    <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">NOME:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.name}}
+                    </div>
+                </div>
+                <div class="flex w-full  py-2 px-2">
+                    <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">ESTADO CIVIL:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.status_civil}}
+                    </div>
+                    <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">RG:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.rg}}
+                    </div>
+                    <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">ORGÂO EXPEDIDOR:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.organ}}
+                    </div>
+                </div>
+                <div class="flex w-full  py-2 px-2">
+                    <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">NIT:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.nit}}
+                    </div>
+                    <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">CPF:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.cpf}}
+                    </div>
+                </div>
+                <div class="flex w-full  py-2 px-2">
+                    <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">DATA DE EXPEDIÇÃO:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.date_expedition}}
+                    </div>
+                    <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                      <label class="text-white font-bold">DATA DE NASCIMENTO:</label>
+                    </span>
+                    <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                        {{object.date_birth}}
+                    </div>
+                </div>
+                <div class="border-2 border-blue-800 mr-2 rounded-lg m-2">
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full inline-flex items-center px-3 PY-1 text-sm text-gray-900 bg-blue-800 border border-e-0 border-blue-800 rounded-t-lg">
+                          <label class="text-white font-bold">ENDEREÇO:</label>
+                        </span>
+                    </div>
+                    <div class="flex w-full  py-2 px-2">
+                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">ENDEREÇO:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.address}}
+                        </div>
+                        <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">BAIRRO:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.district}}
+                        </div>
+                    </div>
+                    <div class="flex w-full mb-2 px-2">
+                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">CIDADE:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.city}}
+                        </div>
+                        <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">UF:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.uf}}
+                        </div>
+                    </div>
+                </div>
+                <div class="border-2 border-blue-800 mr-2 rounded-lg m-2">
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full inline-flex items-center px-3 PY-1 text-sm text-gray-900 bg-blue-800 border border-e-0 border-blue-800 rounded-t-lg">
+                          <label class="text-white font-bold">RENDIMENTOS:</label>
+                        </span>
+                    </div>
+                    <div class="flex w-full  py-2 px-2">
+                        <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">EMPREGADO:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.employee}}
+                        </div>
+                        <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">SALÁRIO R$:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.salary}}
+                        </div>
+                        <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">OUTROS RENDIMENTOS:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.other_income}}
+                        </div>
+                    </div>
+                </div>
+                <div class="border-2 border-blue-800 mr-2 rounded-lg m-2">
+                    <div class="flex w-full rounded-lg">
+                        <span class="w-full inline-flex items-center px-3 PY-1 text-sm text-gray-900 bg-blue-800 border border-e-0 border-blue-800 rounded-t-lg">
+                          <label class="text-white font-bold">OUTROS:</label>
+                        </span>
+                    </div>
+                    <div class="flex w-full  py-2 px-2">
+                        <span class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">DEPENDENTES:</label>
+                        </span>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.dependents}}
+                        </div>
+                        </span>
+                        <div class="ml-6 inline-flex items-center px-3 text-sm text-gray-900 bg-slate-400 border border-e-0 border-gray-300 rounded-s-md">
+                          <label class="text-white font-bold">CASA:</label>
+                        </div>
+                        <div class="w-full px-2 border-2 border-blue-500 rounded-r-md inline-flex items-center">
+                            {{object.house}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'requireds_list' %}" class="m-2 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2  transition-transform duration-300 hover:scale-105">
+                  Voltar
+            </a>
+            <input type="submit" value="Excluir" class="m-2 font-md rounded-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
+         </form>
+      </div>
+   </div>
+</div>
+
+{% endblock %}
