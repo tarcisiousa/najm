@@ -30,4 +30,5 @@ urlpatterns = [
     path('', include('agendas.urls'), name='agendas_list'),
     path('', include('notes.urls'), name='notes_list'),
     path('', include('subs.urls'), name='subs_list'),
+    path('', include('accounts.urls'), name='accounts_login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

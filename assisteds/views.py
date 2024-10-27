@@ -3,6 +3,7 @@ from datetime import date
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
 from django.utils.timezone import now
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
@@ -20,7 +21,7 @@ from responsibles.forms import ResponsiblesForm
 from requireds.forms import RequiredsForm
 
 
-class AssistedsList(ListView):
+class AssistedsList(LoginRequiredMixin, ListView):
     model = AssistedsModel
     template_name = 'assisteds_list.html'
     context_object_name = 'assisteds'
@@ -36,7 +37,7 @@ class AssistedsList(ListView):
         return assisteds
 
 
-class AssistedsCreate(CreateView):
+class AssistedsCreate(LoginRequiredMixin, CreateView):
     model = AssistedsModel
     model_doc = AssistedDocumentModel
     form_class = AssistedsForm
@@ -68,7 +69,7 @@ class AssistedsCreate(CreateView):
 
             return super().post(request, *args, **kwargs)
 
-class AssistedsCreateIncapaz(CreateView):
+class AssistedsCreateIncapaz(LoginRequiredMixin, CreateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_create_incapaz.html'
@@ -94,7 +95,7 @@ class AssistedsCreateIncapaz(CreateView):
             print('Erro no formulário:', form.errors)
             return super().post(request, *args, **kwargs)
 
-class AssistedsDetail(DetailView):
+class AssistedsDetail(LoginRequiredMixin, DetailView):
     model = AssistedsModel
     template_name = 'assisteds_detail.html'
 
@@ -110,7 +111,7 @@ class AssistedsDetail(DetailView):
         return context
 
 
-class AssistedsUpdate(UpdateView):
+class AssistedsUpdate(LoginRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_update.html'
@@ -123,7 +124,7 @@ class AssistedsUpdate(UpdateView):
         context['documents'] = documents
         return context
 
-class AssistedsUpdateSearch(UpdateView):
+class AssistedsUpdateSearch(LoginRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_update_search.html'
@@ -142,7 +143,12 @@ class AssistedsUpdateSearch(UpdateView):
         new_agenda.save()
         return HttpResponseRedirect(reverse('agendas_update', kwargs={'pk': new_agenda.pk}))
 
-class AssistedsUpdateSearchIcapaz(UpdateView):
+    def form_invalid(self, form):
+        print(form.errors)
+        return HttpResponseRedirect(reverse('assisteds_update_search', kwargs={'pk': self.object.pk}))
+
+
+class AssistedsUpdateSearchIcapaz(LoginRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_update_search_incapaz.html'
@@ -153,7 +159,8 @@ class AssistedsUpdateSearchIcapaz(UpdateView):
         responsibles = ResponsiblesModel.objects.filter(id_assisted=self.object.id).first()
         return HttpResponseRedirect(reverse('responsibles_update_search', kwargs={'pk': responsibles.pk}))
 
-class AssistedsUpdateDocuments(UpdateView):
+
+class AssistedsUpdateDocuments(LoginRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsDocumentForm
     template_name = 'assisteds_update_documents.html'
@@ -220,9 +227,7 @@ class AssistedsUpdateDocuments(UpdateView):
             return self.form_invalid(form)
 
 
-
-
-class AssistedsDelete(DeleteView):
+class AssistedsDelete(LoginRequiredMixin, DeleteView):
     model = AssistedsModel
     template_name = 'assisteds_delete.html'
     success_url = '/assisteds/list/'

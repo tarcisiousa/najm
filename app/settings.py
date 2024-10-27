@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'agendas',
     'notes',
     'subs',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,5 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'error',
 }
+
+LOGIN_URL = 'accounts_login'  # Use o nome da sua URL de login

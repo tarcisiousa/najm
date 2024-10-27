@@ -2,55 +2,75 @@
 
 {% block content %}
 
-<div class="p-4 sm:ml-64">
-   <div class=" border-2 border-blue-800 rounded-lg mt-14">
-      <div class=" m-2 mt-4 mb-3 rounded-lg ">
-         <div class="m-2 w-full">
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-slate-300 rounded-lg mt-14" style="min-height: 80vh;">
+      <div class=" ml-2 mr-2 rounded-lg ">
+         <div class="mt-3 w-full">
            {% csrf_token %}
            <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
-            <div class="border-2 border-blue-800 mr-2 rounded-lg">
+            <div class="border-2 border-slate-300 rounded-lg">
                 <div class="flex w-full rounded-lg">
-                    <span class="w-full inline-flex items-center px-3 py-2 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-t-lg">
-                      <label class="text-white font-bold">DETALHES DO AGENDAMENTO:</label>
+                    <span class="w-full inline-flex items-center px-3 py-2 text-sm bg-blue-500 border border-e-0 border-gray-300 rounded-t-lg">
+                      <label class="text-white font-bold">PROTOCOLO: {{object.protocol}}</label>
                     </span>
                 </div>
-                <div class="flex w-full py-2 px-2 mt-3">
-                    <span class="w-2/12  inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
-                      <label class="text-white font-bold">Protocolo:</label>
-                    </span>
-                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
-                        {{object.protocol}}
+               {% for item in process %}
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Protocolo:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{item.protocol}}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="flex w-full  py-2 px-2">
-                    <span class="w-2/12 inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
-                      <label class="text-white font-bold">Requerido:</label>
-                    </span>
-                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
-                        {{object.id_assisted}}
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Requerente:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{item.id_assisted}}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="flex w-full  py-2 px-2">
-                    <span class="w-2/12 inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
-                      <label class="text-white font-bold">Data:</label>
-                    </span>
-                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
-                        {{object.date_at}}
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Responsável:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center">
+                            {% if item.id_responsible != None %}
+                                <div class="w-full h-6 px-2 border-1 rounded-md">{{item.id_responsible}}</div>
+                            {%else%}
+                                <div class="w-full h-6 px-2 border-1 rounded-md">Desnecessário</div>
+                            {%endif%}
+                        </div>
                     </div>
-                    <span class="w-2/12 ml-4 inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
-                      <label class="text-white font-bold">Hora:</label>
-                    </span>
-                    <div class="w-full px-2 border-2 border-blue-200 rounded-r-md">
-                        {{object.time_at}}
+                    <div class="w-full mt-2 flex flex-col items-center">
+                        <div class="flex container-fluid w-full items-center">
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold">Data de Atendimento:</label>
+                            </span>
+                            <span class="w-full h-6 flex items-center text-sm text-gray-600">
+                                <label class="text-slate-600 font-bold ml-2">Horário de Atendimento:</label>
+                            </span>
+                        </div>
+                        <div class="container-fluid flex w-full items-center mb-3">
+                            <div class="w-full h-6 px-2 border-1 rounded-md">{{object.date_at}}</div>
+                            <div class="w-full h-6 px-2 border-1 rounded-md ml-2">{{object.time_at}}</div>
+                        </div>
                     </div>
-                </div>
+               {%endfor%}
             </div>
-            <a href="{% url 'agendas_list' %}" class="m-2 mt-4 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
+            <a href="{% url 'agendas_list' %}" class=" mt-4 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 mr-2">
                 Voltar
             </a>
             {% if object.status == '0'%}
-                <input id="open-modal-button" type="submit" value="Excluir" class="m-2 mt-4 font-md rounded-md bg-red-500 hover:bg-red-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
-                <a href="{% url 'agendas_update' pk=object.pk %}" class="m-2 mt-4 font-md rounded-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
+                <input id="open-modal-button" type="submit" value="Excluir" class=" mt-4 font-md rounded-md bg-red-500 hover:bg-red-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
+                <a href="{% url 'agendas_update' pk=object.pk %}" class=" mt-4 font-md rounded-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2">
                     Reagendar
                 </a>
             {%endif%}
@@ -86,9 +106,9 @@
             <form method="POST" action="{% url 'agendas_delete' pk=object.pk %}">
                 {% csrf_token %}
                 <input type="hidden" value="{{object.id}}" name="id_assisted">
-                <input type="submit" value="Sim" class="w-full sm:w-auto px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm ">
+                <input type="submit" value="Sim" class="w-full sm:w-auto px-6 py-3 text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm ">
             </form>
-            <button data-modal-hide="static-modal" type="button" class="w-full sm:w-auto px-6 py-3 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm">
+            <button data-modal-hide="static-modal" type="button" class="w-full sm:w-auto px-6 py-3 text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm">
                 Não
             </button>
         </div>

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
@@ -8,7 +9,7 @@ from processes.forms import ProcessesForm
 from responsibles.models import ResponsiblesModel
 
 
-class RequiredsList(ListView):
+class RequiredsList(LoginRequiredMixin, ListView):
     model = RequiredsModel
     template_name = 'requireds_list.html'
     context_object_name = 'requireds'
@@ -24,7 +25,7 @@ class RequiredsList(ListView):
 
 
 
-class RequiredsCreate(CreateView):
+class RequiredsCreate(LoginRequiredMixin, CreateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_create.html'
@@ -32,12 +33,12 @@ class RequiredsCreate(CreateView):
 
 
 
-class RequiredsDetail(DetailView):
+class RequiredsDetail(LoginRequiredMixin, DetailView):
     model = RequiredsModel
     template_name = 'requireds_detail.html'
 
 
-class RequiredsUpdate(UpdateView):
+class RequiredsUpdate(LoginRequiredMixin, UpdateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_update.html'
@@ -65,19 +66,19 @@ class RequiredsUpdate(UpdateView):
         return response
 
 
-class RequiredsUpdateProcesses(UpdateView):
+class RequiredsUpdateProcesses(LoginRequiredMixin, UpdateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_update_processes.html'
 
 
-class RequiredsUpdateUnic(UpdateView):
+class RequiredsUpdateUnic(LoginRequiredMixin, UpdateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_update_unic.html'
     success_url = '/requireds/list/'
 
-class RequiredsDelete(DeleteView):
+class RequiredsDelete(LoginRequiredMixin, DeleteView):
     model = RequiredsModel
     template_name = 'requireds_delete.html'
     success_url = '/requireds/list/'

@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="p-4 sm:ml-64">
-    <div class="container-fluid border-2 border-blue-800 rounded-lg mt-14">
+<div class="p-4 sm:ml-48">
+    <div class="container-fluid border-2 border-blue-800 rounded-lg mt-14" style="min-height: 100vh;">
         <div class=" mt-4 mb-3 rounded-lg ">
             <form method="POST" action="{% url 'assisteds_create' %}" enctype="multipart/form-data" class=" w-full">
             {% csrf_token %}

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -6,11 +7,10 @@ from cooperators.models import CooperatorsModel
 from processes.models import ProcessesModel
 from subs.forms import SubForm
 from subs.models import SubModel
+from django.http import HttpResponseRedirect
 
 
-# Create your views here.
-
-class SubList(ListView):
+class SubList(LoginRequiredMixin, ListView):
     template_name = 'sub_list.html'
     model = SubModel
     context_object_name = 'subs'
@@ -30,7 +30,7 @@ class SubList(ListView):
 
         return subs
 
-class SubSearchSub(ListView):
+class SubSearchSub(LoginRequiredMixin, ListView):
     template_name = 'sub_search_sub.html'
     model = ProcessesModel
     context_object_name = 'processes'
@@ -51,11 +51,7 @@ class SubSearchSub(ListView):
         return processes
 
 
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-
-
-class SubCreate(UpdateView):
+class SubCreate(LoginRequiredMixin, UpdateView):
     template_name = 'sub_create.html'
     model = ProcessesModel
     form_class = SubForm
@@ -93,7 +89,7 @@ class SubCreate(UpdateView):
             print(form.errors)
             return self.form_invalid(form)
 
-class SubDetail(DetailView):
+class SubDetail(LoginRequiredMixin, DetailView):
     template_name = 'sub_detail.html'
     model = SubModel
 

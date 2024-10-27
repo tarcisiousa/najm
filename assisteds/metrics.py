@@ -13,11 +13,14 @@ def get_assisted(request, search_assisted, template_name, ):
 
         print(f'CPF do Assistido {search_assisted}')
         if assisteds:
-
-            print(f'Acessando  {assisteds}')
-            print(assisteds.pk)
-            url_reverse = reverse('assisteds_update_search', kwargs={'pk': assisteds.pk})
-            return HttpResponseRedirect(url_reverse)
+            if assisteds.condition == 'Capaz':
+                print(f'Acessando  {assisteds}')
+                print(assisteds.pk)
+                url_reverse = reverse('assisteds_update_search', kwargs={'pk': assisteds.pk})
+                return HttpResponseRedirect(url_reverse)
+            else:
+                url_reverse = reverse('assisteds_update_search_incapaz', kwargs={'pk': assisteds.pk})
+                return HttpResponseRedirect(url_reverse)
         else:
             print('error 2')
             messages.error(request, 'Não existe registro com esse CPF.')

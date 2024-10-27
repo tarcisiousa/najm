@@ -2,6 +2,7 @@ import os
 from datetime import date
 
 from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
@@ -18,7 +19,7 @@ from processes.forms import ProcessesForm
 from django.utils.timezone import now
 from agendas.forms import AgendaForm
 
-class ResponsiblesList(ListView):
+class ResponsiblesList(LoginRequiredMixin, ListView):
     model = ResponsiblesModel
     template_name = 'responsibles_list.html'
     context_object_name = 'responsibles'
@@ -33,7 +34,7 @@ class ResponsiblesList(ListView):
         return responsibles
 
 
-class ResponsiblesCreate(CreateView):
+class ResponsiblesCreate(LoginRequiredMixin, CreateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_create.html'
@@ -41,12 +42,12 @@ class ResponsiblesCreate(CreateView):
 
 
 
-class ResponsiblesDetail(DetailView):
+class ResponsiblesDetail(LoginRequiredMixin, DetailView):
     model = ResponsiblesModel
     template_name = 'responsibles_detail.html'
 
 
-class ResponsiblesUpdate(UpdateView):
+class ResponsiblesUpdate(LoginRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_update.html'
@@ -61,14 +62,13 @@ class ResponsiblesUpdate(UpdateView):
         return HttpResponseRedirect(reverse('responsibles_update_documents', kwargs={
             'pk': responsibles_pk}))
 
-class ResponsiblesUpdateSearch(UpdateView):
+class ResponsiblesUpdateSearch(LoginRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_update_search.html'
     success_url = '/responsibles/list/'
 
     def form_valid(self, form):
-        print('form é válido')
         response = super().form_valid(form)
         today = now().strftime("%d-%m-%Y")
         id_assisted = self.request.POST.get('id_assisted', '')
@@ -88,12 +88,10 @@ class ResponsiblesUpdateSearch(UpdateView):
 
 
         if processes_form.is_valid():
-            print('segundo form é válido')
             saved_processes = processes_form.save()  # Salva o objeto e obtém a instância salva
             processes_pk = saved_processes.pk  # Obtém o pk da instância salva
 
             if agendas_form.is_valid():
-
                 saved_agendas = agendas_form.save()
                 agendas_pk = saved_agendas.pk
 
@@ -105,18 +103,18 @@ class ResponsiblesUpdateSearch(UpdateView):
             print(processes_form.errors)
         return response
 
-class ResponsiblesUpdateUnic(UpdateView):
+class ResponsiblesUpdateUnic(LoginRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_update_unic.html'
     success_url = '/responsibles/list/'
 
-class ResponsiblesDelete(DeleteView):
+class ResponsiblesDelete(LoginRequiredMixin, DeleteView):
     model = ResponsiblesModel
     template_name = 'responsibles_delete.html'
     success_url = '/responsibles/list/'
 
-class ResponsiblesUpdateDocuments(UpdateView):
+class ResponsiblesUpdateDocuments(LoginRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesDocumentsForm
     template_name = 'responsibles_update_documents.html'

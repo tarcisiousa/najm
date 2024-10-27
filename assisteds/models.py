@@ -52,7 +52,7 @@ class AssistedsModel(models.Model):
         ('Alugada', 'Alugada'),
     )
     party = models.CharField(max_length=100, choices=choices_type_party, default='Requerido')
-    condition = models.CharField(max_length=100, choices=choices_type_condition, default='Capaz')
+    condition = models.CharField(max_length=100, choices=choices_type_condition, default='Capaz', blank=True)
     name = models.CharField(max_length=200)
     status_civil = models.CharField(max_length=200, blank=True)
     nis = models.CharField(max_length=200)

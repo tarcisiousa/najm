@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -11,7 +12,7 @@ from processes.models import ProcessesModel
 from agendas.models import AgendaModel
 
 
-class HomeTemplate(ListView):
+class HomeTemplate(LoginRequiredMixin, ListView):
     template_name = 'home.html'
     model = AgendaModel
     context_object_name = 'agendas'

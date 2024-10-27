@@ -8,7 +8,7 @@ class AgendaForm(forms.ModelForm):
 
         widgets = {
             'id_assisted': forms.Select(attrs={
-                "class": "h-8 rounded-none rounded-e-lg bg-gray-50 border border-blue-800 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm",
+                "class": "h-8 px-2 rounded-none rounded-e-lg bg-gray-50 border border-blue-800 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm",
                 "readonly": "readonly"
             }),
             'protocol': forms.TextInput(attrs={

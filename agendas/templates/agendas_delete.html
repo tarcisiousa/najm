@@ -2,8 +2,8 @@
 
 {% block content %}
 
-<div class="p-4 sm:ml-64">
-   <div class=" border-2 border-blue-800 rounded-lg mt-14">
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-blue-800 rounded-lg mt-14"style="min-height: 80vh;">
       <div class=" m-2 mt-4 mb-3 rounded-lg ">
          <form method="POST" action="{% url 'agendas_delete' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
            {% csrf_token %}

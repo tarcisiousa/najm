@@ -1,5 +1,10 @@
 import json
+import os
 from datetime import date, datetime
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from docx import Document
+from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
 from django.db.models import Count, Sum
@@ -17,7 +22,7 @@ from django.db.models import Count
 from .models import AgendaModel
 from assisteds.models import AssistedsModel
 
-class AgendaList(ListView):
+class AgendaList(LoginRequiredMixin, ListView):
     template_name = 'agendas_list.html'
     model = AgendaModel
     context_object_name = 'agendas'
@@ -62,7 +67,7 @@ class AgendaList(ListView):
         return HttpResponse("Protocolo não encontrado", status=404)
 
 
-class AgendaCreate(CreateView):
+class AgendaCreate(LoginRequiredMixin, CreateView):
     model = AgendaModel
     form_class = AgendaForm
     template_name = 'agendas_create.html'
@@ -72,16 +77,80 @@ class AgendaCreate(CreateView):
         return super().form_valid(form)
 
 
-class AgendaDetail(DetailView):
+class AgendaDetail(LoginRequiredMixin, DetailView):
     model = AgendaModel
     template_name = 'agendas_detail.html'
 
-class AgendaDetailProtocol(DetailView):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        agenda = self.get_object()
+        process = ProcessesModel.objects.filter(protocol=agenda.protocol)
+
+        context['process'] = process
+
+        return context
+
+
+class AgendaDetailProtocol(LoginRequiredMixin, DetailView):
     model = AgendaModel
     template_name = 'agendas_detail_protocol.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        agenda = self.get_object()
+        process = ProcessesModel.objects.filter(protocol=agenda.protocol)
 
-class AgendaUpdate(UpdateView):
+        context['process'] = process
+
+        return context
+
+
+    def post(self, *args, **kwargs):
+        agenda_current = self.get_object()
+        process = ProcessesModel.objects.filter(protocol=agenda_current.protocol).first()
+        file_path = os.path.join(settings.MEDIA_ROOT, 'archives', 'ficha_atendimento.docx')
+        doc = Document(file_path)
+
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    for paragraph in cell.paragraphs:
+                        if "{{protocol}}" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("{{protocol}}", str(process.protocol).upper())
+                        if "{{assisted}}" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("{{assisted}}", str(process.id_assisted).upper())
+                        if "{{responsible}}" in paragraph.text:
+                            if process.id_responsible != None:
+                                id_responsible = process.id_responsible
+                            else:
+                                id_responsible = 'Desnecessário'
+                            paragraph.text = paragraph.text.replace("{{responsible}}", str(id_responsible).upper())
+                        if "{{date}}" in paragraph.text:
+                            date_at = date.strftime(agenda_current.date_at, '%d/%m/%Y')
+                            paragraph.text = paragraph.text.replace("{{date}}", str(date_at).upper())
+                        if "{{time}}" in paragraph.text:
+                            paragraph.text = paragraph.text.replace("{{time}}", f'{agenda_current.time_at.upper()}hr')
+                        if "{{number_process}}" in paragraph.text:
+                            print(process.number_process)
+                            if process.number_process != None:
+                                number_process = str(process.number_process).upper()
+                            else:
+                                number_process = ''
+                                print(number_process)
+                            paragraph.text = paragraph.text.replace("{{number_process}}", number_process)
+
+        # Salvar o arquivo novo
+        output_path = os.path.join(settings.MEDIA_ROOT, 'archives', 'ficha_atendimento_preenchido.docx')
+        doc.save(output_path)
+
+        # Criar resposta HTTP para download do arquivo
+        with open(output_path, 'rb') as file:
+            response = HttpResponse(file.read(),
+                                    content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = f'attachment; filename="ficha_atendimento_preenchido.docx"'
+            return response
+
+class AgendaUpdate(LoginRequiredMixin, UpdateView):
     model = AgendaModel
     form_class = AgendaForm
     template_name = 'agendas_update.html'
@@ -123,7 +192,7 @@ class AgendaUpdate(UpdateView):
         return reverse('agendas_detail_protocol', kwargs={'pk': self.object.pk})
 
 
-class AgendaDelete(DeleteView):
+class AgendaDelete(LoginRequiredMixin, DeleteView):
     model = AgendaModel
     template_name = 'agendas_delete.html'
     success_url = '/agendas/list/'
@@ -139,7 +208,7 @@ class AgendaDelete(DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-def horary_vagos_view(request):
+def horary_vagos_view(LoginRequiredMixin, request):
     data_str = request.GET.get('data')
 
     if data_str:
@@ -162,7 +231,7 @@ def horary_vagos_view(request):
 
     return JsonResponse([], safe=False)
 
-def eventos_view(request):
+def eventos_view(LoginRequiredMixin, request):
     # Obter a data atual
     today = date.today()
 
@@ -220,6 +289,29 @@ def eventos_view(request):
     ]
 
     return JsonResponse(events, safe=False)
+
+def preencher_documento(LoginRequiredMixin, data):
+    # Carregar o arquivo existente
+    file_path = os.path.join(settings.MEDIA_ROOT, 'arquivos', 'seu_arquivo.docx')
+    doc = Document(file_path)
+
+    # Substituir marcadores pelos dados do banco
+    for paragraph in doc.paragraphs:
+        if "{{protocolo}}" in paragraph.text:
+            paragraph.text = paragraph.text.replace("{{protocolo}}", data['protocolo'])
+        if "{{numero_processo}}" in paragraph.text:
+            paragraph.text = paragraph.text.replace("{{numero_processo}}", data['numero_processo'])
+        if "{{date}}" in paragraph.text:
+            paragraph.text = paragraph.text.replace("{{date}}", data['data_primeiro_atendimento'])
+        if "{{time}}" in paragraph.text:
+            paragraph.text = paragraph.text.replace("{{time}}", data['data_primeiro_atendimento'])
+        # Continue para outros campos...
+
+    # Salvar o arquivo novo
+    output_path = os.path.join(settings.MEDIA_ROOT, 'arquivos', 'documento_preenchido.docx')
+    doc.save(output_path)
+
+    return output_path
 
 
     

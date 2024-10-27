@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -8,7 +9,7 @@ from .forms import CooperatorsForms
 from processes.models import ProcessesModel
 
 
-class CooperatorsList(ListView):
+class CooperatorsList(LoginRequiredMixin, ListView):
     model = CooperatorsModel
     template_name = 'cooperators_list.html'
     context_object_name = 'cooperators'
@@ -24,7 +25,7 @@ class CooperatorsList(ListView):
         return cooperators
 
 
-class CooperatorsCreate(CreateView):
+class CooperatorsCreate(LoginRequiredMixin, CreateView):
     model = CooperatorsModel
     form_class = CooperatorsForms
     template_name = 'cooperators_create.html'
@@ -38,19 +39,20 @@ class CooperatorsCreate(CreateView):
         print(form.errors)
         return super().form_invalid(form)
 
-class CooperatorsDetail(DetailView):
+
+class CooperatorsDetail(LoginRequiredMixin, DetailView):
     model = CooperatorsModel
     template_name = 'cooperators_detail.html'
 
 
-class CooperatorsUpdate(UpdateView):
+class CooperatorsUpdate(LoginRequiredMixin, UpdateView):
     model = CooperatorsModel
     form_class = CooperatorsForms
     template_name = 'cooperators_update.html'
     success_url = '/cooperators/list/'
 
 
-class CooperatorsDelete(DeleteView):
+class CooperatorsDelete(LoginRequiredMixin, DeleteView):
     model = CooperatorsModel
     template_name = 'cooperators_delete.html'
     success_url = '/cooperators/list/'

@@ -1,16 +1,17 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from .models import NotesModel
 from .forms import NotesForm
 
 
-class NotesList(ListView):
+class NotesList(LoginRequiredMixin, ListView):
     template_name = 'notes_list.html'
     model = NotesModel
     context_object_name = 'notes'
 
 
-class NotesCreate(CreateView):
+class NotesCreate(LoginRequiredMixin, CreateView):
     template_name = 'notes_create.html'
     model = NotesModel
     form_class = NotesForm
@@ -25,7 +26,7 @@ class NotesCreate(CreateView):
         return super().form_invalid(form)  # Correção aqui
 
 
-class NotesDetail(DetailView):
+class NotesDetail(LoginRequiredMixin, DetailView):
     template_name = 'notes_detail.html'
     model = NotesModel
 
@@ -41,7 +42,7 @@ class NotesDetail(DetailView):
 
 
 
-class NotesUpdate(UpdateView):
+class NotesUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'notes_update.html'
     model = NotesModel
     form_class = NotesForm
@@ -58,7 +59,7 @@ class NotesUpdate(UpdateView):
         return super().form_valid(form)
 
 
-class NotesDelete(DeleteView):
+class NotesDelete(LoginRequiredMixin, DeleteView):
     template_name = 'notes_delete.html'
     model = NotesModel
     success_url = '/notes/list/'

@@ -3,6 +3,7 @@ from datetime import date
 
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import ProtectedError, Count
 from django.http import HttpResponseRedirect, FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -20,7 +21,7 @@ from .forms import ProcessesForm, ProcessesDocumentForm, ProcessesNotesForm
 from requireds.forms import RequiredsForm
 
 
-class ProcessesList(ListView):
+class ProcessesList(LoginRequiredMixin, ListView):
     model = ProcessesModel
     template_name = 'processes_list.html'
     context_object_name = 'processes'
@@ -69,7 +70,7 @@ class ProcessesList(ListView):
         context['notes_info_list'] = notes_info_list
         return context
 
-class ProcessesCreate(CreateView):
+class ProcessesCreate(LoginRequiredMixin, CreateView):
     model = ProcessesModel
     form_class = ProcessesForm
     template_name = 'processes_create.html'
@@ -84,12 +85,12 @@ class ProcessesCreate(CreateView):
         return super().form_valid(form)
 
 
-class ProcessesDetail(DetailView):
+class ProcessesDetail(LoginRequiredMixin, DetailView):
     model = ProcessesModel
     template_name = 'processes_detail.html'
 
 
-class ProcessesUpdate(UpdateView):
+class ProcessesUpdate(LoginRequiredMixin, UpdateView):
     model = ProcessesModel
     form_class = ProcessesForm
     template_name = 'processes_update.html'
@@ -177,7 +178,7 @@ class ProcessesUpdate(UpdateView):
             process_current.notes -= 1
             process_current.save()
             return HttpResponseRedirect(reverse('processes_update', kwargs={'pk': self.object.pk}))
-class ProcessesUpdateDocumentProcess(UpdateView):
+class ProcessesUpdateDocumentProcess(LoginRequiredMixin, UpdateView):
     template_name = 'processes_update_documents_process.html'
     model = ProcessesModel
     form_class = ProcessesDocumentForm
@@ -219,7 +220,7 @@ class ProcessesUpdateDocumentProcess(UpdateView):
                 print(f'Esses são os erros = {form_process.errors}')
                 return HttpResponseRedirect(reverse('processes_update_documents_process', kwargs={'pk': instance.pk}))
 
-class ProcessesUpdateDocument(UpdateView):
+class ProcessesUpdateDocument(LoginRequiredMixin, UpdateView):
     template_name = 'processes_update_document.html'
     model = ProcessesModel
     form_class = ProcessesForm
@@ -291,12 +292,12 @@ class ProcessesUpdateDocument(UpdateView):
                 return HttpResponseRedirect(reverse('processes_update_documents', kwargs={'pk': instance.pk}))
 
 
-class ProcessesDelete(DeleteView):
+class ProcessesDelete(LoginRequiredMixin, DeleteView):
     model = ProcessesModel
     template_name = 'processes_delete.html'
     success_url = '/processes/list/'
 
-class ProcessesProtocolDetail(DetailView):
+class ProcessesProtocolDetail(LoginRequiredMixin, DetailView):
     model = ProcessesModel
     template_name = 'processes_protocol.html'
 

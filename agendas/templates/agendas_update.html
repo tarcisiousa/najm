@@ -1,15 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="p-4 sm:ml-64">
-    <div class="container-fluid border-2 border-blue-800 rounded-lg mt-14">
+<div class="p-4 sm:ml-48">
+    <div class="container-fluid border-2 border-slate-300 rounded-lg mt-14" style="min-height: 80vh;">
         <div class="mt-4 mb-3 rounded-lg">
             <form method="POST" action="{% url 'agendas_update' pk=object.pk %}" enctype="multipart/form-data" class="w-full">
 
                 {% csrf_token %}
                 <div class="container-fluid flex w-full mt-2">
                     <span class="h-8 mb-2 inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
-                      <label class="text-white font-bold">REQUERENTE:</label>
+                      <label class="text-white font-bold mr-2">REQUERENTE:</label>
                     </span>
                     {{form.id_assisted}}
                     {{form.protocol}}
@@ -27,12 +27,12 @@
                     <span class="h-8 inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
                         <label class="text-white font-bold">Data Selecionada:</label>
                     </span>
-                    <input type="text" id="date-input" name="data" class="h-8 rounded-none rounded-e-lg bg-gray-50 border border-blue-800 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm mr-2" readonly>
+                    <input type="text" id="date-input" name="data" class="h-8 rounded-none rounded-e-lg bg-gray-50 border border-slate-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm mr-2" readonly>
                     <span class="h-8 inline-flex items-center px-3 text-sm text-gray-900 bg-blue-400 border border-e-0 border-gray-300 rounded-s-md">
                       <label class="text-white font-bold">Horário:</label>
                     </span>
                     <select id="horary-container" name="time-selected"  class="flex-1 h-8 inline-flex items-center px-3 text-sm text-gray-900 border border-e-0 border-gray-300 rounded-r-md mr-2"></select>
-                    <input type="submit" value="Agendar" class="h-8 rounded-md bg-green-500 hover:bg-green-600 border border-blue-800 text-gray-900 focus:ring-blue-600 focus:border-blue-500 block flex-1 font-medium text-white">
+                    <input type="submit" value="Agendar" class="h-8 rounded-md bg-green-500 hover:bg-green-600 border border-slate-300 text-gray-900 focus:ring-blue-600 focus:border-blue-500 block flex-1 font-medium text-white">
                 </div>
             </form>
         </div>
