@@ -3,7 +3,7 @@ from datetime import date
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import ProtectedError
 from django.utils.timezone import now
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
@@ -21,11 +21,11 @@ from responsibles.forms import ResponsiblesForm
 from requireds.forms import RequiredsForm
 
 
-class AssistedsList(LoginRequiredMixin, ListView):
+class AssistedsList( LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = AssistedsModel
     template_name = 'assisteds_list.html'
     context_object_name = 'assisteds'
-
+    permission_required = 'assisteds.view_assistedsmodel'
     def get_queryset(self):
         assisteds = AssistedsModel.objects.all()
         search_assisted = self.request.GET.get('search-assisted', '')
@@ -37,13 +37,14 @@ class AssistedsList(LoginRequiredMixin, ListView):
         return assisteds
 
 
-class AssistedsCreate(LoginRequiredMixin, CreateView):
+class AssistedsCreate( LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = AssistedsModel
     model_doc = AssistedDocumentModel
     form_class = AssistedsForm
     form_class_doc = AssistedsDocumentForm
     template_name = 'assisteds_create.html'
     success_url = '/assisteds/list/'
+    permission_required = 'assisteds.add_assistedsmodel'
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
@@ -69,11 +70,12 @@ class AssistedsCreate(LoginRequiredMixin, CreateView):
 
             return super().post(request, *args, **kwargs)
 
-class AssistedsCreateIncapaz(LoginRequiredMixin, CreateView):
+class AssistedsCreateIncapaz(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_create_incapaz.html'
     success_url = '/assisteds/list/'
+    permission_required = 'assisteds.add_assistedsmodel'
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
@@ -95,27 +97,27 @@ class AssistedsCreateIncapaz(LoginRequiredMixin, CreateView):
             print('Erro no formulário:', form.errors)
             return super().post(request, *args, **kwargs)
 
-class AssistedsDetail(LoginRequiredMixin, DetailView):
+class AssistedsDetail( LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = AssistedsModel
     template_name = 'assisteds_detail.html'
+    permission_required = 'assisteds.view_assistedsmodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         assisted = self.kwargs.get('pk')
         print(assisted)
         documents = AssistedDocumentModel.objects.filter(id_assisted=assisted)
-        for i in documents:
-            print(i.id_assisted.pk)
 
         context['documents'] = documents
         return context
 
 
-class AssistedsUpdate(LoginRequiredMixin, UpdateView):
+class AssistedsUpdate( LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_update.html'
     success_url = '/assisteds/list/'
+    permission_required = 'assisteds.change_assistedsmodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -124,11 +126,14 @@ class AssistedsUpdate(LoginRequiredMixin, UpdateView):
         context['documents'] = documents
         return context
 
-class AssistedsUpdateSearch(LoginRequiredMixin, UpdateView):
+
+
+class AssistedsUpdateSearch( LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_update_search.html'
     success_url = '/assisteds/list/'
+    permission_required = 'assisteds.change_assistedsmodel'
 
     def form_valid(self, form, *args, **kwargs):
         print('iniciou')
@@ -148,11 +153,12 @@ class AssistedsUpdateSearch(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(reverse('assisteds_update_search', kwargs={'pk': self.object.pk}))
 
 
-class AssistedsUpdateSearchIcapaz(LoginRequiredMixin, UpdateView):
+class AssistedsUpdateSearchIcapaz( LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsForm
     template_name = 'assisteds_update_search_incapaz.html'
     success_url = '/assisteds/list/'
+    permission_required = 'assisteds.change_assistedsmodel'
 
     def form_valid(self, form, *args, **kwargs):
         self.object = self.get_object()
@@ -160,11 +166,12 @@ class AssistedsUpdateSearchIcapaz(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(reverse('responsibles_update_search', kwargs={'pk': responsibles.pk}))
 
 
-class AssistedsUpdateDocuments(LoginRequiredMixin, UpdateView):
+class AssistedsUpdateDocuments( LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = AssistedsModel
     form_class = AssistedsDocumentForm
     template_name = 'assisteds_update_documents.html'
     success_url = '/assisteds/list/'
+    permission_required = 'assisteds.change_assistedsmodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -226,25 +233,73 @@ class AssistedsUpdateDocuments(LoginRequiredMixin, UpdateView):
             # Caso o formulário não seja válido, renderiza novamente o template com os erros
             return self.form_invalid(form)
 
+class AssistedsUpdateDocumentsUnic( LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = AssistedsModel
+    form_class = AssistedsDocumentForm
+    template_name = 'assisteds_update_documents_unic.html'
+    success_url = '/assisteds/list/'
+    permission_required = 'assisteds.change_assistedsmodel'
 
-class AssistedsDelete(LoginRequiredMixin, DeleteView):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        documents = AssistedDocumentModel.objects.filter(id_assisted=self.object.pk)
+        context['documents'] = documents
+        return context
+
+    def post(self, request, *args, **kwargs):
+        id_assisted = request.POST.get('id_assisted', '')
+        pk_document = self.request.POST.get('delete-document', '')
+
+        # delete_document
+        if pk_document:
+            document = AssistedDocumentModel.objects.filter(pk=pk_document).first()
+
+            if document and document.file:
+                file_path = os.path.join(settings.MEDIA_ROOT, str(document.file))
+                # Verifica se o arquivo realmente existe no sistema de arquivos e o remove
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+            document.delete()
+            return HttpResponseRedirect(reverse('assisteds_update_documents_unic', kwargs={'pk': id_assisted}))
+
+        # add_document
+        form = self.get_form()
+        form.id_assisted = id_assisted
+        if form.is_valid():
+            self.object = form.save()  # Salva o objeto e atualiza `self.object`
+            print(f'Document adicionado - {self.object.pk}')
+            # Redireciona para a URL de atualização com o ID do assistido
+            return HttpResponseRedirect(reverse('assisteds_update_documents_unic', kwargs={'pk': id_assisted}))
+        else:
+            print(form.errors)
+            # Caso o formulário não seja válido, renderiza novamente o template com os erros
+            return self.form_invalid(form)
+
+
+class AssistedsDelete( LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = AssistedsModel
     template_name = 'assisteds_delete.html'
     success_url = '/assisteds/list/'
+    permission_required = 'assisteds.delete_assistedsmodel'
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         id_assisted = self.object.pk
         responsibles_exists = ResponsiblesModel.objects.filter(id_assisted=id_assisted).exists()
         requireds_exists = RequiredsModel.objects.filter(id_assisted=id_assisted).exists()
-        if requireds_exists or responsibles_exists:
+        processes_exist = ProcessesModel.objects.filter(id_assisted=id_assisted).exists()
+        agenda_exist = AgendaModel.objects.filter(id_assisted=id_assisted).exists()
+
+        if requireds_exists or responsibles_exists or processes_exist or agenda_exist:
             messages.error(self.request, 'O requerente não pode ser excluído, pois está relacionado a processos ou requerido.')
             return render(request, self.template_name, {
                 'object': self.object,
-                'error_message': 'O requerente não pode ser excluído, pois está relacionado a processos ou requerido.',
+                'error_message': 'O requerente não pode ser excluído, pois está relacionado a algum processo ou agendamento.',
             })
         else:
             return super().post(request, *args, **kwargs)
+
+
 
 
 

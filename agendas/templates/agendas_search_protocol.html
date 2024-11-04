@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="p-4 sm:ml-48">
+   <div class=" border-2 border-gray-200 rounded-lg mt-14" style="min-height: 80vh;">
+       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
+           <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
+           </div>
+           <div>
+               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Pesquisar Protocolo</label>
+           </div>
+      </div>
+      <div class=" mr-2 mt-4 mb-3 rounded-lg ">
+         <form method="get" class="m-2 w-full mb-4">
+             {% csrf_token %}
+            <div class="flex w-full">
+             <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-s-md">
+               <svg class="w-4 h-4 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                 <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+               </svg>
+             </span>
+             <input name="search_value" class="w-full border-1 border-slate-300 px-2" placeholder="Digite o valor desejado...">
+             <select name="search_option" class="w-full px-2 rounded-none border-slate-300 rounded-e-lg">
+                 <option> --- Selecione a opção de busca --- </option>
+                 <option value="cpf">CPF</option>
+                 <option value="email">E-mail</option>
+                 <option value="name">Nome</option>
+                 <option value="protocol">Protocolo</option>
+                 <option value="rg">RG</option>
+             </select>
+             <button type="submit" class="font-md rounded-md bg-blue-800 hover:bg-blue-600 text-white hover:text-white font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                  Pesquisar
+             </button>
+            </div>
+         </form>
+         <div class="table-responsive ml-2">
+             <div class="rounded-lg relative overflow-x-auto border-1 border-blue-800">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead class="text-gray-100 uppercase bg-blue-400">
+                        <tr class="text-xs">
+                            <th scope="col" class="px-2 py-1 ">
+                                Protocolo
+                            </th>
+                            <th scope="col" class="px-2 py-1 ">
+                                Requerente
+                            </th>
+                            <th scope="col" class="px-2 py-1 ">
+                                Data Atendimento
+                            </th>
+                            <th scope="col" class="px-2 py-1 ">
+                                Horário atendimento
+                            </th>
+                            <th scope="col" class="px-2 py-1">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for agenda in agendas %}
+                        <tr class="text-xs">
+                            <th scope="row"  class="px-2 py-1 text-cyan-700 hover:text-cyan-900 border-r border-b border-blue-800">
+                                <a href="" >
+                                    {{agenda.protocol}}
+                                </a>
+                            </th>
+                            <th scope="row"  class="px-2 py-1 text-cyan-700 hover:text-cyan-900 border-r border-b border-blue-800">
+                                <a href="" >
+                                    {{agenda.id_assisted}}
+                                </a>
+                            </th>
+                            <th scope="row"  class="px-2 py-1 text-cyan-700 hover:text-cyan-900  border-r border-b border-blue-800 ">
+                                <a href="" >
+                                    {{agenda.date_at}}
+                                </a>
+                            </th>
+                            <th scope="row"  class="px-2 py-1 text-cyan-700 hover:text-cyan-900  border-r border-b border-blue-800 ">
+                                <a href="" >
+                                    {{agenda.time_at}}
+                                </a>
+                            </th>
+                            <th class="text-gray-400 flex flex-now items-center justify-center space-x-4 border-b ">
+                                <a href="{% url 'agendas_detail_protocol' pk=agenda.pk %}"  class="-blue-700 hover:bg-blue-500  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                    <i class="bi bi-eye transition-transform duration-300 hover:scale-105"></i>
+                                </a>
+                            </th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+             </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -10,10 +10,11 @@ from subs.models import SubModel
 from django.http import HttpResponseRedirect
 
 
-class SubList(LoginRequiredMixin, ListView):
+class SubList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'sub_list.html'
     model = SubModel
     context_object_name = 'subs'
+    permission_required = 'subs.view_submodel'
 
     def get_queryset(self):
         subs = SubModel.objects.all()
@@ -30,10 +31,11 @@ class SubList(LoginRequiredMixin, ListView):
 
         return subs
 
-class SubSearchSub(LoginRequiredMixin, ListView):
+class SubSearchSub(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'sub_search_sub.html'
     model = ProcessesModel
     context_object_name = 'processes'
+    permission_required = 'subs.view_submodel'
 
     def get_queryset(self):
         processes = ProcessesModel.objects.all()
@@ -51,11 +53,12 @@ class SubSearchSub(LoginRequiredMixin, ListView):
         return processes
 
 
-class SubCreate(LoginRequiredMixin, UpdateView):
+class SubCreate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'sub_create.html'
     model = ProcessesModel
     form_class = SubForm
     success_url = '/sub/list/'
+    permission_required = 'subs.change_submodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -89,9 +92,10 @@ class SubCreate(LoginRequiredMixin, UpdateView):
             print(form.errors)
             return self.form_invalid(form)
 
-class SubDetail(LoginRequiredMixin, DetailView):
+class SubDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'sub_detail.html'
     model = SubModel
+    permission_required = 'subs.view_submodel'
 
 
 

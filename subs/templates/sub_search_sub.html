@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="p-4 sm:ml-48">
-   <div class=" border-2 border-gray-200 rounded-lg mt-14">
+   <div class=" border-2 border-gray-200 rounded-lg mt-14" style="min-height: 80vh;">
        <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
            <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
            </div>
@@ -17,13 +17,13 @@
              <div class="w-full mt-4 flex flex-col items-center">
                 <div class="flex container-fluid w-full items-center">
                     <span class="w-full h-6 flex items-center text-sm text-gray-600">
-                        <label class="text-slate-600 font-bold">Nome do Advogado(a):</label>
+                        <label class="text-slate-500 font-bold">Nome do Advogado(a):</label>
                     </span>
                     <span class="w-full h-6 flex items-center text-sm text-gray-600">
-                        <label class="text-slate-600 font-bold ml-2">Número do Processo:</label>
+                        <label class="text-slate-500 font-bold ml-2">Número do Processo:</label>
                     </span>
                     <span class="w-full h-6 flex items-center text-sm text-gray-600">
-                        <label class="text-slate-600 font-bold ml-2">Número do Protocolo:</label>
+                        <label class="text-slate-500 font-bold ml-2">Número do Protocolo:</label>
                     </span>
                 </div>
                 <div class="container-fluid flex w-full items-center">
@@ -41,6 +41,7 @@
                 </button>
             </div>
          </form>
+         <div class="text-slate-500 font-medium border-b-2 border-slate-400 mb-2 ml-2">* Processos psubstabelecimento</div>
          <div class="table-responsive ml-2">
              <div class="rounded-lg relative overflow-x-auto border-1 border-blue-800">
                 <table class="w-full text-xs text-left rtl:text-right text-gray-500">
@@ -52,7 +53,8 @@
                             <th scope="col" class="px-1 py-1 border-r">
                                 Advogado(a)
                             </th>
-                            <th scope="col" class="px-1 py-1">
+                            <th scope="col" class=" w-1/12 px-1 py-1">
+                                Substabelecer
                             </th>
                         </tr>
                     </thead>

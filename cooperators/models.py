@@ -2,10 +2,10 @@ from django.db import models
 
 class CooperatorsModel(models.Model):
     choices_name = (
+        ('Admistrador(a)', 'Admistrador(a)'),
         ('Advogado(a)', 'Advogado(a)'),
-        ('Recepicionista', 'Recepicionista'),
+        ('Recepção', 'Recepção'),
         ('Procurador(a)', 'Procurador(a)'),
-
     )
     cargo_type_uf = (
         ('ACRE', 'AC'),
@@ -36,6 +36,7 @@ class CooperatorsModel(models.Model):
         ('TOCANTINS', 'TO'),
     )
     name = models.CharField(max_length=250)
+    status_civil = models.CharField(max_length=200, blank=True)
     post = models.CharField(max_length=200, choices=choices_name)
     registration = models.CharField(max_length=250)
     cpf = models.CharField(max_length=250)

@@ -3,5 +3,5 @@ from .models import AgendaModel
 
 @admin.register(AgendaModel)
 class AgendaAdmin(admin.ModelAdmin):
-    filter = ('name',)
-    search_fields = ('name',)
+    filter = ('protocol',)
+    search_fields = ('protocol',)

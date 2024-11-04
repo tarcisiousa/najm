@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ResponsiblesList, ResponsiblesCreate, ResponsiblesDetail, ResponsiblesUpdate, ResponsiblesDelete, \
-    ResponsiblesUpdateUnic, ResponsiblesUpdateSearch, ResponsiblesUpdateDocuments
+    ResponsiblesUpdateUnic, ResponsiblesUpdateSearch, ResponsiblesUpdateDocuments, ResponsiblesUpdateDocumentsUnic
 
 urlpatterns = [
     path('responsibles/list/', ResponsiblesList.as_view(), name='responsibles_list'),
@@ -11,4 +11,5 @@ urlpatterns = [
     path('responsibles/unic/update/<int:pk>', ResponsiblesUpdateUnic.as_view(), name='responsibles_update_unic'),
     path('responsibles/<int:pk>/delete', ResponsiblesDelete.as_view(), name='responsibles_delete'),
     path('responsibles/upload/documents/<int:pk>', ResponsiblesUpdateDocuments.as_view(), name='responsibles_update_documents'),
+    path('responsibles/upload/documents/unic/<int:pk>', ResponsiblesUpdateDocumentsUnic.as_view(), name='responsibles_update_documents_unic'),
 ]

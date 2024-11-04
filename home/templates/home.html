@@ -3,8 +3,8 @@
 {% block content %}
 
 <div class="p-4 sm:ml-48">
-   <div class="p-4 border-2 border-slate-400 rounded-lg mt-14 drop-shadow-lg ">
-        <div class="rounded-md mb-8 ">
+   <div class="p-4 border-2 border-slate-300 rounded-lg mt-14 drop-shadow-lg" style="min-height: 80vh;">
+        <div class="rounded-md ">
             <div class="container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
                 <!-- Primeiro bloco -->
                  <div class="flex flex-col justify-between p-3 h-32 rounded-lg bg-gradient-to-r from-teal-500 to-teal-700 drop-shadow-lg ">
@@ -81,12 +81,11 @@
             </div>
         </div>
         <div class="container-fluid rounded-md mb-8 ">
-            <div class=" h-8 flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-md">
-               <div class="">
-                   <label class="w-full block ml-3 text 2xl font-medium text-white font-medium ">Agenda do dia!</label>
-               </div>
-            </div>
+
             {% if notes %}
+            <div class=" h-8 flex items-center drop-shadow-md text-gray-500 border-b-2 border-slate-400 mb-6">
+               <label class="flex w-full block text 2xl font-medium font-medium">* Agenda do dia!</label>
+            </div>
             <div class="mb-2 mt-2 container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 border-slate-300 rounded-md">
                 {% for note in notes%}
                     {% if note.priority == 'Baixa' %}
@@ -151,7 +150,7 @@
                 {%endfor%}
             </div>
             {%else%}
-                <div class="border-2 border-slate-300 text-center text-xl text-slate-400 items-center font-medium rounded-md mt-2 py-4">
+                <div class="drop-shadow-md border-2 border-slate-300 text-center text-xl text-slate-400 items-center font-medium rounded-md mt-10 py-40">
                     Nenhum compromisso para hoje...
                 </div>
             {%endif%}

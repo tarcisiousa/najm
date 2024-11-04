@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="p-4 sm:ml-48">
-   <div class=" border-2 border-gray-200 rounded-lg mt-14">
+   <div class=" border-2 border-gray-200 rounded-lg mt-14" style="min-height: 80vh;">
        <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
            <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
            </div>
@@ -22,21 +22,26 @@
                     </svg>
 
                 </span>
-                <select name="first_select" id="first_select" onchange="handleFirstSelectChange()" class="h-10 rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm">
+                <select name="first_select" id="first_select" onchange="handleFirstSelectChange()" class="h-10 px-2 rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-slate-500 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm">
                     <option value="">-- Selecione --</option>
-                    <option value="PENDENCIA">PENDÊNCIA</option>
-                    <option value="FASE">FASE</option>
+                    <option value="FASE">Fases</option>
+                    <option value="myprocesses">Meus Processos</option>
+                    <option value="PENDENCIA">Pendências</option>
+
                 </select>
                 <!-- Botão para PENDÊNCIA -->
                 <button id="pendencia_button" type="submit" name="search_pending" value="search_pending" style="display: none;" class="font-md rounded-md bg-blue-500 hover:bg-blue-600 text-gray-200 hover:text-gray-200 font-bold btn px-4 py-1 ml-2 transition-transform duration-300 hover:scale-105">
                     Filtrar PENDÊNCIA
+                </button>
+                <button id="myprocesses_button" type="submit" name="search_myprocesses" value="search_myprocesses" style="display: none;" class="font-md rounded-md bg-blue-500 hover:bg-blue-600 text-gray-200 hover:text-gray-200 font-bold btn px-4 py-1 ml-2 transition-transform duration-300 hover:scale-105">
+                    Filtrar Meus Processos
                 </button>
             </div>
 
             <!-- Div para o segundo select com FASE -->
             <div id="second_select_div" style="display: none;" class="flex w-full m-2 space-x-2 items-center">
                 <!-- Select para status processual -->
-                <select name="status_phase" id="status_phase" class="w-96 h-10 px-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 text-sm flex-grow">
+                <select name="status_phase" id="status_phase" class="w-96 h-10 px-2 rounded-lg bg-gray-50 border border-gray-300 text-slate-500 focus:ring-blue-500 focus:border-blue-500 text-sm flex-grow">
                     <option value="EM ANÁLISE">EM ANÁLISE</option>
                     <option value="PETIÇÃO">PETIÇÃO</option>
                     <option value="PROTOCOLADO">PROTOCOLADO</option>
@@ -50,8 +55,6 @@
                     Filtrar
                 </button>
             </div>
-
-
        </form>
        <div class=" mr-2 mb-3 rounded-lg ">
          <form method="get" class="m-2 w-full">
@@ -75,6 +78,7 @@
                  + Cadastrar
              </a>
          </div>
+         {% if processes%}
          <div class="table-responsive ml-2">
              <div class="rounded-lg relative overflow-x-auto border-1 border-blue-800">
                 <table class="w-full text-xs text-left rtl:text-right text-gray-500">
@@ -111,58 +115,58 @@
                     <tbody>
                         {% for process in processes %}
                         <tr class="text-xs">
-                            <th scope="row"  class="px-1 py-1 text-cyan-700  border-r border-b border-blue-800">
+                            <th scope="row"  class="px-1 py-1 text-cyan-700  border-r border-t border-blue-800">
                                 {{process.date_at}}
                             </th>
-                            <th scope="row"  class="px-1 py-1 text-cyan-700  border-r border-b border-blue-800">
+                            <th scope="row"  class="px-1 py-1 text-cyan-700  border-r border-t border-blue-800">
                                 {{process.protocol}}
                             </th>
-                            <th scope="row"  class="px-1 py-1 text-xs text-cyan-700  border-r border-b border-blue-800">
+                            <th scope="row"  class="px-1 py-1 text-xs text-cyan-700  border-r border-t border-blue-800">
                                 {% if process.id_advocate == None%}
-                                    <label>Aguardando atendimento</label>
+                                    <label class="text-red-600">Aguardando atendimento</label>
                                 {%else%}
                                     {{process.id_advocate}}
                                 {%endif%}
                             </th>
-                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-b border-blue-800 ">
+                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-t border-blue-800 ">
                                 {{process.id_assisted}}
                             </th>
-                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-b border-blue-800 ">
+                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-t border-blue-800 ">
                                 {% if process.id_required == None%}
                                     <label></label>
                                 {%else%}
                                     {{process.id_required}}
                                 {%endif%}
                             </th>
-                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-b border-blue-800 ">
+                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-t border-blue-800 ">
                                 {% if process.number_process == None %}
                                     <label></label>
                                 {%else%}
                                     {{process.number_process}}
                                 {%endif%}
                             </th>
-                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-b border-blue-800 ">
+                            <th scope="row"  class="px-1 py-1 text-cyan-700   border-r border-t border-blue-800 ">
                                 {% if process.phase == None %}
                                     <label></label>
                                 {%else%}
                                     {{process.phase}}
                                 {%endif%}
                             </th>
-                            <th scope="row"  class="px-1 py-1 text-cyan-700  text-center border-r border-b border-blue-800 ">
+                            <th scope="row"  class="px-1 text-cyan-700  text-center border-r border-t border-blue-800 ">
                                  {% if process.notes == 0 %}
                                     <i class="fas fa-check-circle" style="color: green;"></i> <!-- Ícone de sem pendência -->
                                  {%else%}
                                     {{process.notes}} <i class="fas fa-exclamation-circle" style="color: orange;"></i>
                                  {%endif%}
                             </th>
-                            <th class="text-gray-400 flex  items-center justify-center space-x-4 border-b rounded-rb-md">
-                                <a href="{% url 'processes_detail' pk=process.pk %}"  class="bg-blue-700 hover:bg-blue-500  px-1 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                            <th class="text-gray-400 flex  items-center justify-center space-x-4 border-t rounded-rb-md py-1">
+                                <a href="{% url 'processes_detail' pk=process.pk %}"  class="bg-blue-700 hover:bg-blue-500  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="{% url 'processes_update' pk=process.pk %}" class="bg-orange-600 hover:bg-orange-400 px-1 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                <a href="{% url 'processes_update' pk=process.pk %}" class="bg-orange-600 hover:bg-orange-400 px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <a href="{% url 'processes_delete' pk=process.pk %}" class="bg-red-700 hover:bg-red-500  px-1 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                <a href="{% url 'processes_delete' pk=process.pk %}" class="bg-red-700 hover:bg-red-500  px-2 py-1 text-white font-bold rounded transition-transform duration-300 hover:scale-105">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </th>
@@ -172,30 +176,27 @@
                 </table>
              </div>
          </div>
+         {% else %}
+         <div class="font-medium text-4xl text-slate-400 border-2 border-slate-300 rounded-md ml-2 flex justify-center items-center py-36"> Nenhum resultado encontrado...</div>
+         {% endif %}
        </div>
    </div>
 </div>
 
-
 <script>
     function handleFirstSelectChange() {
-        const firstSelect = document.getElementById('first_select');
+        const firstSelect = document.getElementById('first_select').value;
         const pendenciaButton = document.getElementById('pendencia_button');
         const secondSelectDiv = document.getElementById('second_select_div');
         const faseButton = document.getElementById('fase_button');
+        const myprocessesButton = document.getElementById('myprocesses_button');
 
-        if (firstSelect.value === 'PENDENCIA') {
-            pendenciaButton.style.display = 'inline-block';  // Mostra o botão de PENDÊNCIA
-            secondSelectDiv.style.display = 'none';  // Esconde o segundo select
-            faseButton.style.display = 'none';  // Esconde o botão de FASE
-        } else if (firstSelect.value === 'FASE') {
-            pendenciaButton.style.display = 'none';  // Esconde o botão de PENDÊNCIA
-            secondSelectDiv.style.display = 'block';  // Mostra o segundo select
-            faseButton.style.display = 'inline-block';  // Mostra o botão de FASE
-        } else {
-            pendenciaButton.style.display = 'none';  // Esconde todos os botões se nenhum valor for selecionado
-            secondSelectDiv.style.display = 'none';
-        }
+        // Controle de visibilidade dos botões e selects
+        pendenciaButton.style.display = firstSelect === 'PENDENCIA' ? 'inline-block' : 'none';
+        secondSelectDiv.style.display = firstSelect === 'FASE' ? 'block' : 'none';
+        faseButton.style.display = firstSelect === 'FASE' ? 'inline-block' : 'none';
+        myprocessesButton.style.display = firstSelect === 'myprocesses' ? 'inline-block' : 'none';
     }
 </script>
+
 {% endblock %}

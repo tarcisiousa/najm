@@ -100,7 +100,7 @@ class AssistedDocumentModel(models.Model):
         ('outro', 'Outros Documentos'),
     ]
 
-    id_assisted = models.ForeignKey(AssistedsModel, related_name='documents_assisteds', on_delete=models.PROTECT)
+    id_assisted = models.ForeignKey(AssistedsModel, related_name='documents_assisteds', on_delete=models.CASCADE)
     type_document = models.CharField(max_length=100, choices=TYPE_DOCUMENT_CHOICES, default='outro')
     name_customize = models.CharField(max_length=255, blank=True, null=True)  # Para novos tipos
     file = models.FileField(upload_to=documento_upload_to)

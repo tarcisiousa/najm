@@ -2,7 +2,7 @@ import os
 from datetime import date
 
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
@@ -19,10 +19,11 @@ from processes.forms import ProcessesForm
 from django.utils.timezone import now
 from agendas.forms import AgendaForm
 
-class ResponsiblesList(LoginRequiredMixin, ListView):
+class ResponsiblesList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = ResponsiblesModel
     template_name = 'responsibles_list.html'
     context_object_name = 'responsibles'
+    permission_required = 'responsibles.view_responsiblesmodel'
 
     def get_queryset(self):
         responsibles = ResponsiblesModel.objects.all()
@@ -34,24 +35,36 @@ class ResponsiblesList(LoginRequiredMixin, ListView):
         return responsibles
 
 
-class ResponsiblesCreate(LoginRequiredMixin, CreateView):
+class ResponsiblesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_create.html'
     success_url = '/responsibles/list/'
+    permission_required = 'responsibles.add_responsiblesmodel'
 
 
 
-class ResponsiblesDetail(LoginRequiredMixin, DetailView):
+class ResponsiblesDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = ResponsiblesModel
     template_name = 'responsibles_detail.html'
+    permission_required = 'responsibles.view_responsiblesmodel'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        responsibles = self.kwargs.get('pk')
+        documents_all = ResponsiblesDocumentsModel.objects.all()
+        print(documents_all)
+        documents = ResponsiblesDocumentsModel.objects.filter(id_responsible=responsibles)
+        context['documents'] = documents
+        return context
 
 
-class ResponsiblesUpdate(LoginRequiredMixin, UpdateView):
+class ResponsiblesUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_update.html'
     success_url = '/responsibles/list/'
+    permission_required = 'responsibles.change_responsiblesmodel'
 
 
     def form_valid(self, form):
@@ -62,11 +75,12 @@ class ResponsiblesUpdate(LoginRequiredMixin, UpdateView):
         return HttpResponseRedirect(reverse('responsibles_update_documents', kwargs={
             'pk': responsibles_pk}))
 
-class ResponsiblesUpdateSearch(LoginRequiredMixin, UpdateView):
+class ResponsiblesUpdateSearch(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_update_search.html'
     success_url = '/responsibles/list/'
+    permission_required = 'responsibles.change_responsiblesmodel'
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -103,27 +117,37 @@ class ResponsiblesUpdateSearch(LoginRequiredMixin, UpdateView):
             print(processes_form.errors)
         return response
 
-class ResponsiblesUpdateUnic(LoginRequiredMixin, UpdateView):
+class ResponsiblesUpdateUnic(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesForm
     template_name = 'responsibles_update_unic.html'
     success_url = '/responsibles/list/'
+    permission_required = 'responsibles.change_responsiblesmodel'
 
-class ResponsiblesDelete(LoginRequiredMixin, DeleteView):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        documents = ResponsiblesDocumentsModel.objects.filter(id_responsible=self.object.pk)
+        context['documents'] = documents
+        return context
+
+class ResponsiblesDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ResponsiblesModel
     template_name = 'responsibles_delete.html'
     success_url = '/responsibles/list/'
+    permission_required = 'responsibles.delete_responsiblesmodel'
 
-class ResponsiblesUpdateDocuments(LoginRequiredMixin, UpdateView):
+class ResponsiblesUpdateDocuments(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ResponsiblesModel
     form_class = ResponsiblesDocumentsForm
     template_name = 'responsibles_update_documents.html'
     success_url = '/responsibles/list/'
+    permission_required = 'responsibles.change_responsiblesmodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         print(self.object.pk)
         documents = ResponsiblesDocumentsModel.objects.filter(id_responsible=self.object.pk)
+
         context['documents'] = documents
         return context
 
@@ -165,6 +189,48 @@ class ResponsiblesUpdateDocuments(LoginRequiredMixin, UpdateView):
             document.id_responsible_id = id_responsible
             document.save()
             return HttpResponseRedirect(reverse('responsibles_update_documents', kwargs={'pk': id_responsible}))
+        else:
+            print(form.errors)
+            # Renderiza o template novamente com os erros do formulário
+            return self.form_invalid(form)
+
+
+class ResponsiblesUpdateDocumentsUnic(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = ResponsiblesModel
+    form_class = ResponsiblesDocumentsForm
+    template_name = 'responsibles_update_documents_unic.html'
+    success_url = '/responsibles/list/'
+    permission_required = 'responsibles.change_responsiblesmodel'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        documents = ResponsiblesDocumentsModel.objects.filter(id_responsible=self.object.pk)
+        context['documents'] = documents
+        return context
+
+    def post(self, request, *args, **kwargs):
+        today = now().strftime("%d-%m-%Y")
+        id_responsible = kwargs['pk']
+        pk_document = request.POST.get('delete-document', '')
+
+        # Delete document
+        if pk_document:
+            document = ResponsiblesDocumentsModel.objects.filter(pk=pk_document).first()
+            if document and document.file:
+                file_path = os.path.join(settings.MEDIA_ROOT, str(document.file))
+                # Verifica se o arquivo existe e o remove
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                document.delete()
+            return HttpResponseRedirect(reverse('responsibles_update_documents_unic', kwargs={'pk': id_responsible}))
+
+        # Add document
+        form = self.get_form()
+        if form.is_valid():
+            document = form.save(commit=False)
+            document.id_responsible_id = id_responsible
+            document.save()
+            return HttpResponseRedirect(reverse('responsibles_update_documents_unic', kwargs={'pk': id_responsible}))
         else:
             print(form.errors)
             # Renderiza o template novamente com os erros do formulário

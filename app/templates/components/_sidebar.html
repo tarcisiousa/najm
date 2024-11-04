@@ -10,6 +10,7 @@
                     <span class="ms-3">Agendamento</span>
                 </a>
             </li>
+            {% if perms.assisteds.add_assistedsmodel %}
             <li>
                 <button type="button" class="flex items-center w-full p-2 text-base text-white hover:bg-blue-700 transition duration-300 rounded-lg group transition-transform duration-300 hover:scale-105" aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-6 h-6 text-white transition duration-300" viewBox="0 0 16 16">
@@ -22,9 +23,11 @@
                     </svg>
                 </button>
                 <ul id="dropdown-example" class="hidden py-2 space-y-2">
+                    {% if perms.cooperators.view_cooperatorsmodel%}
                     <li class="ml-9">
                         <a href="{% url 'cooperators_list' %}" class="block p-1 text-white rounded-lg hover:bg-blue-600 transition duration-300 transition-transform duration-300 hover:scale-105">Colaboradores</a>
                     </li>
+                    {% endif %}
                     <li class="ml-9">
                         <a href="{% url 'assisteds_list' %}" class="block p-1 text-white rounded-lg hover:bg-blue-600 transition duration-300 transition-transform duration-300 hover:scale-105">Requerente</a>
                     </li>
@@ -36,6 +39,8 @@
                     </li>
                 </ul>
             </li>
+            {% endif %}
+            {% if perms.processes.add_processesmodel %}
             <li>
                 <button type="button" class="flex items-center w-full p-2 text-base text-white hover:bg-blue-700 transition duration-300 rounded-lg group transition-transform duration-300 hover:scale-105" aria-controls="dropdown-example" data-collapse-toggle="dropdown-process">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">
@@ -52,14 +57,15 @@
                     <li class="ml-9">
                         <a href="{% url 'processes_list' %}" class="block p-1 text-white rounded-lg hover:bg-blue-600 transition duration-300 transition-transform duration-300 hover:scale-105">Atendimentos</a>
                     </li>
-                    <li class="ml-9">
-                        <a href="{% url 'responsibles_list' %}" class="block p-1 text-white rounded-lg hover:bg-blue-600 transition duration-300 transition-transform duration-300 hover:scale-105">Renúncia</a>
-                    </li>
+                    {% if perms.subs.view_submodel %}
                     <li class="ml-9">
                         <a href="{% url 'sub_list' %}" class="block p-1 text-white rounded-lg hover:bg-blue-600 transition duration-300 transition-transform duration-300 hover:scale-105">Substabelecer</a>
                     </li>
+                    {% endif %}
                 </ul>
             </li>
+            {% endif %}
+            {% if perms.notes.add_notesmodel %}
             <li>
                 <a href="{% url 'notes_list' %}" class="flex items-center p-2 text-white rounded-lg hover:bg-blue-700 transition duration-300 transition-transform duration-300 hover:scale-105">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-white transition duration-300">
@@ -69,6 +75,7 @@
                     <span class="ms-3">Agenda</span>
                 </a>
             </li>
+            {% endif %}
             <li>
                 <a href="{% url 'accounts_logout' %}" class="flex items-center p-2 text-white rounded-lg hover:bg-blue-700 transition duration-300 transition-transform duration-300 hover:scale-105">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-white">

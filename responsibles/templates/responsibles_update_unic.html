@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="p-4 sm:ml-48">
-   <div class=" border-2 border-slate-400 rounded-lg mt-14 mb-10">
+   <div class=" border-2 border-slate-400 rounded-lg mt-14 mb-10" style="min-height: 80vh;">
       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
            <div class="bg-blue-500 border-blue-500 border-4 h-full py-8 px-2 rounded-l-lg ">
            </div>
@@ -228,6 +228,42 @@
                             <div class="w-full h-6 ml-2">{{form.house}}</div>
                         </div>
                     </div>
+                </div>
+                <div class="m-2 mt-3">
+                    {% if documents %}
+                        <div class="flex w-full rounded-lg">
+                            <span class="w-full h-6 inline-flex items-center text-sm text-blue-400 border-b-2 border-blue-500">
+                              <label class="border-slate-600 font-bold">DOCUMENTOS APRESENTADOS:</label>
+                            </span>
+                        </div>
+                        <div class=" flex items-center ">
+                            <div class="container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 mt-3 mb-1  ">
+                                {% for item in documents%}
+                                 <div class="flex flex-col justify-between inline-flex items-center">
+                                    <span class="w-full  h-10 inline-flex items-center px-2 text-sm text-gray-600 border-2 border-gray-400 rounded-md bg-gray-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-green-800">
+                                          <path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" />
+                                        </svg>
+                                        <div class="w-full inline-flex items-center px-2 text-gray-600 font-medium">
+                                             {{ item.name_customize|truncatechars:25 }}
+                                        </div>
+                                        <a href="{% url 'responsibles_update_documents_unic' pk=object.pk %}" class="bg-blue-500 hover:bg-blue-600  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                            <i class="bi bi-pencil transition-transform duration-300 hover:scale-105"></i>
+                                        </a>
+                                    </span>
+                                 </div>
+                               {%endfor%}
+                            </div>
+                        </div>
+                    {%else%}
+                        <div class="w-full border-2 border-slate-400 rounded-lg text-center py-4 mt-2">
+                            <div class="mb-2">Nenhum Documento Encontrado...</div>
+                            <a href="{% url 'responsibles_update_documents_unic' pk=object.pk %}" class="mt-2 bg-blue-500 hover:bg-blue-600 px-2 py-1 text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                Gerenciar Documentos
+                            </a>
+                        </div>
+
+                    {%endif%}
                 </div>
             </div>
             <div class="mt-4 flex border-t-2 border-slate-500 mr-2">

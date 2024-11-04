@@ -3,34 +3,44 @@
 {% block content %}
 
 <div class="p-4 sm:ml-48">
-   <div class=" border-2 border-gray-200 rounded-lg mt-14">
+   <div class=" border-2 border-gray-200 rounded-lg mt-14" style="min-height: 80vh;">
        <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
            <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
            </div>
-           <div>
-               <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Colaboradores</label>
-           </div>
+           {{kwargs}}
+           {% if request.user.groups.first.name == 'Administrador(a)' %}
+               <div>
+                   <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Colaboradores</label>
+               </div>
+           {% else %}
+               <div>
+                   <label class="w-full block ml-3 mb-3 mt-3 text-4xl font-medium text-white font-medium ">Meus dados</label>
+               </div>
+           {% endif %}
       </div>
       <div class=" mr-2 mt-4 mb-3 rounded-lg ">
-         <form class="m-2 w-full">
-             {% csrf_token %}
-            <div class="flex w-full">
-             <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-s-md">
-               <svg class="w-4 h-4 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                 <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
-               </svg>
-             </span>
-             <input type="text" id="website-admin" name="search-cooperator" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm " placeholder="Nome do Colaborador...">
-             <button type="submit" class="font-md rounded-md bg-blue-800 hover:bg-blue-600 text-gray-200 hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
-                  Pesquisar
-             </button>
-            </div>
-         </form>
-         <div class="w-full flex justify-end">
-             <a href="{% url 'cooperators_create'%}" class="font-md rounded-md bg-green-600 hover:bg-green-800 text-gray-200 hover:text-gray-200 font-bold btn px-3 py-1 ml-2 mb-2 transition-transform duration-300 hover:scale-105">
-                 + Cadastrar
-             </a>
-         </div>
+         {% if request.user.groups.first.name == 'Administrador(a)' %}
+             <form class="m-2 w-full">
+                {% csrf_token %}
+                <div class="flex w-full">
+                 <span class="inline-flex items-center px-3 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-s-md">
+                   <svg class="w-4 h-4 text-blue-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                     <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                   </svg>
+                 </span>
+                 <input type="text" id="website-admin" name="search-cooperator" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm " placeholder="Nome do Colaborador...">
+                 <button type="submit" class="font-md rounded-md bg-blue-800 hover:bg-blue-600 text-gray-200 hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
+                      Pesquisar
+                 </button>
+                </div>
+             </form>
+
+             <div class="w-full flex justify-end">
+                 <a href="{% url 'cooperators_create'%}" class="font-md rounded-md bg-green-600 hover:bg-green-800 text-gray-200 hover:text-gray-200 font-bold btn px-3 py-1 ml-2 mb-2 transition-transform duration-300 hover:scale-105">
+                     + Cadastrar
+                 </a>
+             </div>
+         {% endif %}
          <div class="table-responsive ml-2">
              <div class="rounded-lg relative overflow-x-auto border-1 border-blue-800">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -50,6 +60,9 @@
                             </th>
                             <th scope="col" class="px-2 py-1 ">
                                 Telefone
+                            </th>
+                            <th scope="col" class="text-center px-2 py-1">
+                                Usuário
                             </th>
                             <th scope="col" class="px-2 py-1">
                             </th>
@@ -83,16 +96,45 @@
                                     {{cooperator.fone_1}}
                                 </a>
                             </th>
-                            <th class="text-gray-400 flex flex-now items-center justify-center space-x-4 border-b ">
-                                <a href="{% url 'cooperators_detail' pk=cooperator.pk %}"  class="bg-blue-700 hover:bg-blue-500  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
-                                    <i class="bi bi-eye"></i>
+                            <th scope="row"  class="px-2 py-1 text-cyan-700 hover:text-cyan-900  border-r border-b border-blue-800 ">
+                                <a href="" class="flex items-center text-center" >
+                                    {% for user in users %}
+                                        {% if user.username == cooperator.cpf %}
+                                            {% if user.is_active == True %}
+                                               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 text-green-600 w-full">
+                                                  <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                                                </svg>
+
+                                            {% endif %}
+                                            {% if user.is_active == False%}
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 text-red-600 w-full">
+                                                  <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd" />
+                                                </svg>
+                                            {% endif %}
+
+                                        {% endif %}
+                                    {% endfor %}
                                 </a>
-                                <a href="{% url 'cooperators_update' pk=cooperator.pk %}" class="bg-orange-600 hover:bg-orange-400 px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <a href="{% url 'cooperators_delete' pk=cooperator.pk %}" class="bg-red-700 hover:bg-red-500  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
-                                    <i class="bi bi-trash"></i>
-                                </a>
+                            </th>
+                            <th class="text-gray-400 flex flex-now items-center justify-center space-x-4 border-b py-1">
+                                {% if request.user.groups.first.name == 'Administrador(a)' %}
+                                    <a href="{% url 'cooperators_detail' pk=cooperator.pk %}"  class="bg-blue-700 hover:bg-blue-500  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'cooperators_update' pk=cooperator.pk %}" class="bg-orange-600 hover:bg-orange-400 px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'cooperators_delete' pk=cooperator.pk %}" class="bg-red-700 hover:bg-red-500  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'cooperators_detail' pk=cooperator.pk %}"  class="bg-blue-700 hover:bg-blue-500  px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'cooperators_update' pk=cooperator.pk %}" class="bg-orange-600 hover:bg-orange-400 px-2 py-1  text-white font-bold rounded transition-transform duration-300 hover:scale-105">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                {% endif %}
                             </th>
                         </tr>
                         {% endfor %}

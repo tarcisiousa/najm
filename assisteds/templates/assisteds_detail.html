@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="p-4 sm:ml-48">
-   <div class=" border-2 border-blue-400 rounded-lg mt-14 mb-10">
+   <div class=" border-2 border-blue-400 rounded-lg mt-14 mb-10" style="min-height: 80vh;">
        <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
            <div class="bg-blue-500 border-blue-500 border-4 h-full py-8 px-2 rounded-l-lg ">
            </div>
@@ -237,6 +237,7 @@
                        {%endfor%}
                   </div>
                 </div>
+                <!--
                 <div class="flex justify-end border-b-2 border-blue-400">
                       <a href="{% url 'assisteds_update_documents' pk=object.pk%}" class="m-2 mt-2 font-md rounded-r-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
                             Gerenciar Documentos
@@ -249,8 +250,8 @@
                         Upload de Documentos
                     </a>
                 </div>
-
                 {%endif%}
+                -->
             </div>
             <div class="flex">
                 <a href="{% url 'assisteds_list' %}" class="m-2 mt-4 font-md rounded-r-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1 ml-2 mr-2 transition-transform duration-300 hover:scale-105">

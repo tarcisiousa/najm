@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
@@ -9,10 +9,11 @@ from processes.forms import ProcessesForm
 from responsibles.models import ResponsiblesModel
 
 
-class RequiredsList(LoginRequiredMixin, ListView):
+class RequiredsList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = RequiredsModel
     template_name = 'requireds_list.html'
     context_object_name = 'requireds'
+    permission_required = 'requireds.view_requiredsmodel'
 
     def get_queryset(self):
         requireds = RequiredsModel.objects.all()
@@ -23,26 +24,26 @@ class RequiredsList(LoginRequiredMixin, ListView):
 
         return requireds
 
-
-
-class RequiredsCreate(LoginRequiredMixin, CreateView):
+class RequiredsCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_create.html'
     success_url = '/requireds/list/'
+    permission_required = 'requireds.add_requiredsmodel'
 
 
-
-class RequiredsDetail(LoginRequiredMixin, DetailView):
+class RequiredsDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = RequiredsModel
     template_name = 'requireds_detail.html'
+    permission_required = 'requireds.view_requiredsmodel'
 
 
-class RequiredsUpdate(LoginRequiredMixin, UpdateView):
+class RequiredsUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_update.html'
     success_url = '/requireds/list/'
+    permission_required = 'requireds.change_requiredsmodel'
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -66,21 +67,24 @@ class RequiredsUpdate(LoginRequiredMixin, UpdateView):
         return response
 
 
-class RequiredsUpdateProcesses(LoginRequiredMixin, UpdateView):
+class RequiredsUpdateProcesses(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_update_processes.html'
+    permission_required = 'requireds.change_requiredsmodel'
 
 
-class RequiredsUpdateUnic(LoginRequiredMixin, UpdateView):
+class RequiredsUpdateUnic(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = RequiredsModel
     form_class = RequiredsForm
     template_name = 'requireds_update_unic.html'
     success_url = '/requireds/list/'
+    permission_required = 'requireds.change_requiredsmodel'
 
-class RequiredsDelete(LoginRequiredMixin, DeleteView):
+class RequiredsDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = RequiredsModel
     template_name = 'requireds_delete.html'
     success_url = '/requireds/list/'
+    permission_required = 'requireds.delete_requiredsmodel'
 
 

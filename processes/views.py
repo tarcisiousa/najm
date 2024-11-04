@@ -3,16 +3,17 @@ from datetime import date
 
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.models import User
 from django.db.models import ProtectedError, Count
 from django.http import HttpResponseRedirect, FileResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-
 from agendas.models import AgendaModel
 from assisteds.forms import AssistedsDocumentForm
 from assisteds.models import AssistedDocumentModel, AssistedsModel
+from cooperators.models import CooperatorsModel
 from responsibles.forms import ResponsiblesDocumentsForm
 from responsibles.models import ResponsiblesDocumentsModel
 from . import metrics
@@ -21,17 +22,21 @@ from .forms import ProcessesForm, ProcessesDocumentForm, ProcessesNotesForm
 from requireds.forms import RequiredsForm
 
 
-class ProcessesList(LoginRequiredMixin, ListView):
+class ProcessesList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = ProcessesModel
     template_name = 'processes_list.html'
     context_object_name = 'processes'
+    permission_required = 'processes.view_processesmodel'
 
     def get_queryset(self):
+        user_current = self.request.user
+        print(user_current)
         processes = ProcessesModel.objects.all()
         search_protocol = self.request.GET.get('search-process', '')
         search_today = self.request.GET.get('today', '')
         search_pending = self.request.GET.get('search_pending', '')
         search_phase = self.request.GET.get('search_phase', '')
+        search_myprocesses = self.request.GET.get('search_myprocesses', '')
 
         if search_protocol:
             processes = processes.filter(protocol__icontains=search_protocol)
@@ -50,6 +55,10 @@ class ProcessesList(LoginRequiredMixin, ListView):
         if search_phase:
             status_phase = self.request.GET.get('status_phase', '')
             processes = processes.filter(phase=status_phase)
+
+        if search_myprocesses:
+            cooperator = CooperatorsModel.objects.filter(email=user_current.email).first()
+            processes = processes.filter(id_advocate=cooperator.pk)
 
         return processes
 
@@ -70,11 +79,12 @@ class ProcessesList(LoginRequiredMixin, ListView):
         context['notes_info_list'] = notes_info_list
         return context
 
-class ProcessesCreate(LoginRequiredMixin, CreateView):
+class ProcessesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = ProcessesModel
     form_class = ProcessesForm
     template_name = 'processes_create.html'
     success_url = '/processes/list/'
+    permission_required = 'processes.add_processesmodel'
     
     def form_valid(self, form):
         self.object = form.save()  # Salva e atribui o objeto a self.object
@@ -85,17 +95,25 @@ class ProcessesCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProcessesDetail(LoginRequiredMixin, DetailView):
+class ProcessesDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = ProcessesModel
     template_name = 'processes_detail.html'
+    permission_required = 'processes.view_processesmodel'
 
 
-class ProcessesUpdate(LoginRequiredMixin, UpdateView):
+class ProcessesUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = ProcessesModel
     form_class = ProcessesForm
     template_name = 'processes_update.html'
     success_url = '/processes/list/'
+    permission_required = 'processes.change_processesmodel'
 
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        user_current = self.request.user  # Obtem o usuário logado
+        form.fields['id_advocate'].queryset = CooperatorsModel.objects.filter(cpf=user_current.username)
+        #print(form.instance.cpf)
+        return form
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -116,6 +134,8 @@ class ProcessesUpdate(LoginRequiredMixin, UpdateView):
         add_note = self.request.POST.get('add_note', '')
         note_id = self.request.POST.get('note_id', '')
         id_process = self.request.POST.get('id_process', '')
+        document_procuracao = self.request.POST.get('document_procuracao', '')
+        document_hiposuficiencia = self.request.POST.get('document_hiposuficiencia', '')
 
         if id_assisted:
             requireds_form = RequiredsForm(request.POST)  # O form de Requireds
@@ -148,7 +168,6 @@ class ProcessesUpdate(LoginRequiredMixin, UpdateView):
                     agenda_protocol = AgendaModel.objects.filter(protocol=self.object.protocol).first()
                     agenda_protocol.status = '1'
                     agenda_protocol.save()
-                print('deu certo')
                 return self.form_valid(form)
             else:
                 print(form.errors)
@@ -178,10 +197,22 @@ class ProcessesUpdate(LoginRequiredMixin, UpdateView):
             process_current.notes -= 1
             process_current.save()
             return HttpResponseRedirect(reverse('processes_update', kwargs={'pk': self.object.pk}))
-class ProcessesUpdateDocumentProcess(LoginRequiredMixin, UpdateView):
+
+
+        if document_procuracao:
+            processes =  self.get_object()
+            return metrics.generate_document(processes)
+
+        if document_hiposuficiencia:
+            print('Entrou no gerar documento')
+            processes =  self.get_object()
+            return metrics.generate_document_hipo(processes)
+
+class ProcessesUpdateDocumentProcess(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'processes_update_documents_process.html'
     model = ProcessesModel
     form_class = ProcessesDocumentForm
+    permission_required = 'processes.change_processesmodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -220,10 +251,11 @@ class ProcessesUpdateDocumentProcess(LoginRequiredMixin, UpdateView):
                 print(f'Esses são os erros = {form_process.errors}')
                 return HttpResponseRedirect(reverse('processes_update_documents_process', kwargs={'pk': instance.pk}))
 
-class ProcessesUpdateDocument(LoginRequiredMixin, UpdateView):
+class ProcessesUpdateDocument(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     template_name = 'processes_update_document.html'
     model = ProcessesModel
     form_class = ProcessesForm
+    permission_required = 'processes.change_processesmodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -292,20 +324,23 @@ class ProcessesUpdateDocument(LoginRequiredMixin, UpdateView):
                 return HttpResponseRedirect(reverse('processes_update_documents', kwargs={'pk': instance.pk}))
 
 
-class ProcessesDelete(LoginRequiredMixin, DeleteView):
+class ProcessesDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = ProcessesModel
     template_name = 'processes_delete.html'
     success_url = '/processes/list/'
+    permission_required = 'processes.delete_processesmodel'
 
-class ProcessesProtocolDetail(LoginRequiredMixin, DetailView):
+class ProcessesProtocolDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = ProcessesModel
     template_name = 'processes_protocol.html'
+    permission_required = 'processes.view_processesmodel'
 
 
-class ProcessNotesCreate(CreateView):
+class ProcessNotesCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     template_name = 'processes_create_notes.html'
     model = ProcessesNotesModel
     form_class = ProcessesNotesForm
+    permission_required = 'processes.add_processesmodel'
 
 
 def open_document(request, pk):

@@ -1,6 +1,9 @@
 from django.urls import path
-from .views import (AssistedsList, AssistedsCreate, AssistedsDetail, AssistedsUpdate, AssistedsDelete, AssistedsCreateIncapaz
-, AssistedsUpdateSearch, AssistedsUpdateSearchIcapaz, AssistedsUpdateDocuments)
+from .views import (AssistedsList, AssistedsCreate, AssistedsDetail, AssistedsUpdate, AssistedsDelete,
+                    AssistedsCreateIncapaz
+, AssistedsUpdateSearch, AssistedsUpdateSearchIcapaz, AssistedsUpdateDocuments, AssistedsUpdateDocumentsUnic)
+
+
 
 urlpatterns = [
     path('assisteds/list/', AssistedsList.as_view(), name='assisteds_list'),
@@ -12,4 +15,6 @@ urlpatterns = [
     path('assisteds/<int:pk>/search/update', AssistedsUpdateSearch.as_view(), name='assisteds_update_search'),
     path('assisteds/search/<int:pk>/update', AssistedsUpdateSearchIcapaz.as_view(), name='assisteds_update_search_incapaz'),
     path('assisteds/upload/documents/<int:pk>', AssistedsUpdateDocuments.as_view(), name='assisteds_update_documents'),
+    path('assisteds/upload/documents/unic/<int:pk>', AssistedsUpdateDocumentsUnic.as_view(), name='assisteds_update_documents_unic'),
+
 ]

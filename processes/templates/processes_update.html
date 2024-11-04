@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="p-4 sm:ml-48">
-   <div class=" border-2 border-blue-800 rounded-lg mt-14 mb-10">
+   <div class=" border-2 border-blue-800 rounded-lg mt-14 mb-10" style="min-height: 80vh;">
       <div class="flex bg-gradient-to-r from-orange-500 to-orange-300 items-center drop-shadow-lg text-gray-500 rounded-lg m-2">
            <div class="bg-blue-600 border-blue-600 border-4 h-full py-8 px-2 rounded-l-lg ">
            </div>
@@ -25,10 +25,10 @@
          <form method="POST" action="{% url 'processes_update' pk=object.pk %}" enctype="multipart/form-data" class="m-2 w-full">
            {% csrf_token %}
            <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
-            <div class="border-2 border-blue-800 mr-2 rounded-lg">
+            <div class="mr-2 ">
                 <div class="flex w-full rounded-lg">
-                    <span class="w-full inline-flex items-center px-3 py-1 text-sm text-gray-900 bg-blue-800 border border-e-0 border-gray-300 rounded-t-lg">
-                      <label class="text-white font-bold">Preencha os dados do Processo:</label>
+                    <span class="w-full inline-flex items-center px-3 py-1 text-sm text-gray-500 border-b-2 border-gray-500">
+                      <label class="font-bold">* Preencha os dados do Processo:</label>
                     </span>
                 </div>
                 <div class="w-full  mt-2 flex flex-col items-center">
@@ -135,30 +135,28 @@
                                     {% for category in categories %}
                                         <option value="{{ category }}">{{ category }}</option>
                                     {% endfor %}
-                                {%else%}
-                                        <option value="">{{object.processes_matter}}</option>
+                                {% else %}
+                                    <option value="">{{ object.processes_matter }}</option>
                                     {% for category in categories %}
                                         <option value="{{ category }}">{{ category }}</option>
                                     {% endfor %}
-                                {%endif%}
+                                {% endif %}
                             </select>
-                        </div>
-                        <div class="w-full h-6">
+                            </div>
+
+                            <div class="w-full h-6">
                             <select id="select-subcategory" name="subcategory" class="w-full h-6 ml-1 px-2 border-1 rounded-md">
                                 {% if object.processes_classs == None %}
                                     <option value="">Selecione Classe</option>
-                                {%else%}
-                                    <option value="">{{object.processes_classs}}</option>
-                                {%endif%}
+                                {% else %}
+                                    <option value="">{{ object.processes_classs }}</option>
+                                {% endif %}
                             </select>
-                        </div>
-                        <div class="w-full h-6 ml-2">
-                            <select id="select-subcategory2" name="subcategory2" class="w-full h-6 px-2 border-1 rounded-md">
-                                {% if object.processes_subject == None %}
-                                    <option value="">Selecione Assunto</option>
-                                {%else%}
-                                    <option value="">{{object.processes_subject}}</option>
-                                {%endif%}
+                            </div>
+
+                            <div class="w-full h-6">
+                            <select id="select-subcategory2" name="action" class="w-full h-6 ml-1 px-2 border-1 rounded-md">
+                                <option value="">Selecione Ação</option>
                             </select>
                         </div>
                     </div>
@@ -174,7 +172,7 @@
                     </div>
                 </div>
             </div>
-            <div class="border-2 border-blue-800 rounded-md mt-2">
+            <div class="border-t-2 border-slate-400 mt-2 mr-2">
                 <a href="{% url 'processes_update_documents_process' pk=object.pk %}" class="w-60 m-2flex justify-center rounded-md bg-slate-500 hover:bg-slate-600 text-white hover:text-gray-200 font-bold btn px-2 ml-2 mr-2 transition-transform duration-300 hover:scale-105">
                     <span class="w-full flex items-center px-2 text-sm text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -207,6 +205,11 @@
                             Adicionar Lembrete
                         </div>
                     </span>
+                </a>
+            </div>
+            <div class="border-t-2 border-slate-400 mt-2 mr-2">
+                <a class="w-60 m-2 rounded-md bg-slate-500 hover:bg-slate-600 text-white hover:text-gray-200 font-bold btn px-2 ml-2 mr-2 transition-transform duration-300 hover:scale-105" onclick="toggleModalGenerateDocument()">
+                    Gerar Documentos
                 </a>
             </div>
             <input type="hidden" name="save_process" value="save_process">
@@ -538,6 +541,42 @@
     </div>
 </div>
 
+<div id="modal_generate_document" class=" sm:ml-36 fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-3/4">
+        <div class="flex  items-center mb-1 border-b-2 border-slate-400 ">
+            <h2 class="text-lg font-bold text-blue-800">Gerar Documentos</h2>
+            <button class="text-gray-500 hover:text-gray-700" onclick="toggleModalGenerateDocument()">&times;</button>
+        </div>
+        <div class=" flex">
+        <!-- Modal content with form -->
+            <form method="POST" action="{% url 'processes_update' pk=object.pk %}" enctype="multipart/form-data" class="">
+               {% csrf_token %}
+               <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+                <div class="container-fluid rounded-lg">
+                    <div class="mt-4 ">
+                        <input type="hidden" name="document_procuracao" value="document_procuracao">
+                        <input type="submit" value="Gerar Procução" class="w-60 flex justify-center rounded-md bg-slate-500 hover:bg-slate-600 text-white hover:text-gray-200 font-bold btn px-2 transition-transform duration-300 hover:scale-105">
+                    </div>
+                </div>
+            </form>
+            <form method="POST" action="{% url 'processes_update' pk=object.pk %}" enctype="multipart/form-data" class="">
+               {% csrf_token %}
+               <!-- <label for="website-admin" class="w-full block mb-1 text-sm font-medium text-blue-800">Nome</label> -->
+                <div class="container-fluid rounded-lg">
+                    <div class="mt-4 ">
+                        <input type="hidden" name="document_hiposuficiencia" value="document_hiposuficiencia">
+                        <input type="submit" value="Gerar Hiposuficiência" class="w-60 flex justify-center rounded-md bg-slate-500 hover:bg-slate-600 text-white hover:text-gray-200 font-bold btn px-2 transition-transform duration-300 hover:scale-105">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="flex justify-end">
+            <button type="button" class="m-2 font-md rounded-md bg-blue-500 hover:bg-blue-600 text-white hover:text-gray-200 font-bold btn px-4 py-1" onclick="toggleModalGenerateDocument()">Fechar</button>
+            <!-- <input type="submit" value="Adicionar" class="m-2 font-md rounded-md bg-green-500 hover:bg-green-600 text-white hover:text-gray-200 font-bold btn px-4 py-1"> -->
+        </div>
+    </div>
+</div>
+
 <script>
 function toggleModal() {
     var modal = document.getElementById("modal");
@@ -559,6 +598,13 @@ function toggleModalNotesInfo() {
 }
 </script>
 
+<script>
+function toggleModalGenerateDocument() {
+    var modal = document.getElementById("modal_generate_document");
+    modal.classList.toggle("hidden");
+}
+</script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
@@ -567,12 +613,12 @@ $(document).ready(function() {
     // Ao mudar a categoria
     $('#select-category').change(function() {
         var selectedCategory = $(this).val();
-        var subcategories = categories[selectedCategory] || {};
+        var subcategories = categories[selectedCategory] || [];
 
         // Limpar e popular o select de subcategorias
         $('#select-subcategory').empty().append('<option value="">Selecione</option>');
-        $.each(subcategories, function(subcategory, actions) {
-            $('#select-subcategory').append('<option value="' + subcategory + '">' + subcategory + '</option>');
+        $.each(subcategories, function(index, action) {
+            $('#select-subcategory').append('<option value="' + action[0] + '">' + action[0] + '</option>');
         });
 
         // Limpar o terceiro select
@@ -583,15 +629,17 @@ $(document).ready(function() {
     $('#select-subcategory').change(function() {
         var selectedCategory = $('#select-category').val();
         var selectedSubcategory = $(this).val();
-        var actions = categories[selectedCategory][selectedSubcategory] || [];
+        var actions = categories[selectedCategory].find(sub => sub[0] === selectedSubcategory) || [];
 
-        // Limpar e popular o select de subcategoria2
+        // Limpar e popular o select de ações
         $('#select-subcategory2').empty().append('<option value="">Selecione</option>');
-        $.each(actions, function(index, action) {
-            $('#select-subcategory2').append('<option value="' + action[0] + '">' + action[1] + '</option>');
-        });
+        if (actions.length > 0) {
+            // Adicionando a ação encontrada no array de ações
+            $('#select-subcategory2').append('<option value="' + actions[0][0] + '">' + actions[0][0] + '</option>');
+        }
     });
 });
 </script>
+
 
 {% endblock %}

@@ -1,8 +1,7 @@
 import json
 import os
 from datetime import date, datetime
-
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from docx import Document
 from django.conf import settings
 from django.utils import timezone
@@ -22,10 +21,12 @@ from django.db.models import Count
 from .models import AgendaModel
 from assisteds.models import AssistedsModel
 
-class AgendaList(LoginRequiredMixin, ListView):
+class AgendaList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'agendas_list.html'
     model = AgendaModel
     context_object_name = 'agendas'
+    permission_required = 'agendas.view_agendamodel'
+
 
     def get_queryset(self):
         date_now = date.today()
@@ -67,19 +68,21 @@ class AgendaList(LoginRequiredMixin, ListView):
         return HttpResponse("Protocolo não encontrado", status=404)
 
 
-class AgendaCreate(LoginRequiredMixin, CreateView):
+class AgendaCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = AgendaModel
     form_class = AgendaForm
     template_name = 'agendas_create.html'
     success_url = '/agendas/list/'
+    permission_required = 'agendas.add_agendamodel'
 
     def form_valid(self, form):
         return super().form_valid(form)
 
 
-class AgendaDetail(LoginRequiredMixin, DetailView):
+class AgendaDetail(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = AgendaModel
     template_name = 'agendas_detail.html'
+    permission_required = 'agendas.view_agendamodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -91,9 +94,10 @@ class AgendaDetail(LoginRequiredMixin, DetailView):
         return context
 
 
-class AgendaDetailProtocol(LoginRequiredMixin, DetailView):
+class AgendaDetailProtocol(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = AgendaModel
     template_name = 'agendas_detail_protocol.html'
+    permission_required = 'agendas.view_agendamodel'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -150,10 +154,11 @@ class AgendaDetailProtocol(LoginRequiredMixin, DetailView):
             response['Content-Disposition'] = f'attachment; filename="ficha_atendimento_preenchido.docx"'
             return response
 
-class AgendaUpdate(LoginRequiredMixin, UpdateView):
+class AgendaUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = AgendaModel
     form_class = AgendaForm
     template_name = 'agendas_update.html'
+    permission_required = 'agendas.change_agendamodel'
 
     def post(self, request, *args, **kwargs):
         print('inicou')
@@ -192,10 +197,11 @@ class AgendaUpdate(LoginRequiredMixin, UpdateView):
         return reverse('agendas_detail_protocol', kwargs={'pk': self.object.pk})
 
 
-class AgendaDelete(LoginRequiredMixin, DeleteView):
+class AgendaDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = AgendaModel
     template_name = 'agendas_delete.html'
     success_url = '/agendas/list/'
+    permission_required = 'agendas.delete_agendamodel'
 
     def delete(self, request, *args, **kwargs):
         agenda = self.get_object()
@@ -208,7 +214,7 @@ class AgendaDelete(LoginRequiredMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
-def horary_vagos_view(LoginRequiredMixin, request):
+def horary_vagos_view(request):
     data_str = request.GET.get('data')
 
     if data_str:
@@ -231,7 +237,7 @@ def horary_vagos_view(LoginRequiredMixin, request):
 
     return JsonResponse([], safe=False)
 
-def eventos_view(LoginRequiredMixin, request):
+def eventos_view(request):
     # Obter a data atual
     today = date.today()
 
@@ -312,6 +318,38 @@ def preencher_documento(LoginRequiredMixin, data):
     doc.save(output_path)
 
     return output_path
+
+class AgendaListProtocol(ListView):
+    template_name = 'agendas_search_protocol.html'
+    model = AgendaModel
+    context_object_name = 'agendas'
+
+    def get_queryset(self):
+        agendas = AgendaModel.objects.all()
+        assisteds = AssistedsModel.objects.all()
+        search_option = self.request.GET.get('search_option', '')
+        search_value = self.request.GET.get('search_value', '')
+
+        print(search_value)
+        print(search_option)
+        if search_option and search_value:
+            if search_option == 'cpf':
+                assisted_ids = assisteds.filter(cpf__icontains=search_value).values_list('id', flat=True)
+                agendas = agendas.filter(id_assisted__in=assisted_ids)
+            elif search_option == 'email':
+                assisted_ids = assisteds.filter(email__icontains=search_value).values_list('id', flat=True)
+                agendas = agendas.filter(id_assisted__in=assisted_ids)
+            elif search_option == 'name':
+                assisted_ids = assisteds.filter(name__icontains=search_value).values_list('id', flat=True)
+                agendas = agendas.filter(id_assisted__in=assisted_ids)
+            elif search_option == 'protocol':
+                agendas = agendas.filter(protocol=search_value)
+            elif search_option == 'rg':
+                assisted_ids = assisteds.filter(rg__icontains=search_value).values_list('id', flat=True)
+                agendas = agendas.filter(id_assisted__in=assisted_ids)
+
+        return agendas
+
 
 
     

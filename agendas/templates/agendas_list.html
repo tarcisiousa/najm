@@ -24,22 +24,33 @@
                      <form method="get">
                          <input type="date" name="search-date" class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-500 font-medium focus:ring-blue-500 focus:border-blue-500 block flex-1 text-sm " required>
                      </form>
-                     <button type="submit" class="font-md rounded-md bg-blue-500 hover:bg-blue-600 text-gray-100 hover:text-gray-100 font-bold btn px-4 py-1 ml-2 transition-transform duration-300 hover:scale-105">
-                          Pesquisar
-                     </button>
+                     <a type="submit" class="items-start text-start flex font-md rounded-md bg-blue-500 hover:bg-blue-600 text-gray-100 hover:text-gray-100 font-bold btn px-10 ml-2 transition-transform duration-300 hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                          <path d="M8.25 10.875a2.625 2.625 0 1 1 5.25 0 2.625 2.625 0 0 1-5.25 0Z" />
+                          <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.125 4.5a4.125 4.125 0 1 0 2.338 7.524l2.007 2.006a.75.75 0 1 0 1.06-1.06l-2.006-2.007a4.125 4.125 0 0 0-3.399-6.463Z" clip-rule="evenodd" />
+                        </svg>
+
+                        <span class="ms-3 ">Pesquisar</span>
+                     </a>
+                     <a href="{% url 'agendas_search_protocol' %}" class="flex font-md rounded-md bg-blue-500 hover:bg-blue-600 text-gray-100 hover:text-gray-100 font-bold btn px-3 ml-2  transition-transform duration-300 hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                          <path fill-rule="evenodd" d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.99c-.426.053-.851.11-1.274.174-1.454.218-2.476 1.483-2.476 2.917v6.294a3 3 0 0 0 3 3h.27l-.155 1.705A1.875 1.875 0 0 0 7.232 22.5h9.536a1.875 1.875 0 0 0 1.867-2.045l-.155-1.705h.27a3 3 0 0 0 3-3V9.456c0-1.434-1.022-2.7-2.476-2.917A48.716 48.716 0 0 0 18 6.366V3.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM16.5 6.205v-2.83A.375.375 0 0 0 16.125 3h-8.25a.375.375 0 0 0-.375.375v2.83a49.353 49.353 0 0 1 9 0Zm-.217 8.265c.178.018.317.16.333.337l.526 5.784a.375.375 0 0 1-.374.409H7.232a.375.375 0 0 1-.374-.409l.526-5.784a.373.373 0 0 1 .333-.337 41.741 41.741 0 0 1 8.566 0Zm.967-3.97a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H18a.75.75 0 0 1-.75-.75V10.5ZM15 9.75a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V10.5a.75.75 0 0 0-.75-.75H15Z" clip-rule="evenodd" />
+                        </svg>
+                        <span class="ms-3">Imprimir Protocolo</span>
+                     </a>
                 </div>
                 <div class="w-full flex justify-end mt-2 mr-2">
-                    <a id="open-modal-button" class="flex font-md rounded-md bg-slate-500 hover:bg-slate-600 text-gray-100 hover:text-gray-100 font-bold btn px-3 py-1 ml-2 mb-2 transition-transform duration-300 hover:scale-105">
+                    <a id="open-modal-button" class="flex font-md rounded-md bg-slate-500 hover:bg-slate-600 text-gray-100 hover:text-gray-100 font-bold btn px-3 ml-2 transition-transform duration-300 hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                            <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                         </svg>
-                        <span class="ms-3">Agendar Retorno</span>
+                        <span class="ms-1">Agendar Retorno</span>
                     </a>
-                    <a href="{% url 'assisteds_create' %}" class="flex font-md rounded-md bg-green-500 hover:bg-green-600 text-gray-100 hover:text-gray-100 font-bold btn px-3 py-1 ml-2 mb-2 transition-transform duration-300 hover:scale-105">
+                    <a href="{% url 'assisteds_create' %}" class="flex font-md rounded-md bg-green-500 hover:bg-green-600 text-gray-100 hover:text-gray-100 font-bold btn px-3 ml-2 transition-transform duration-300 hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                           <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                         </svg>
-                        <span class="ms-3">Novo Agendamento</span>
+                        <span class="ms-2">Novo Agendamento</span>
                     </a>
                 </div>
                 <div class="text-slate-500 font-medium border-b-2 border-slate-300 ml-2 mr-2">* Atendimentos do dia!</div>
@@ -92,39 +103,36 @@
                         {%endfor%}
                     </div>
                 {%else%}
-                    <div class="w-full font-medium text-4xl text-center text-slate-300 border-2 border-slate-200 p-8 mb-4 rounded-lg">Não teremos agendamento hoje...</div>
+                    <div class="w-full font-medium text-4xl text-center text-slate-300 border-2 border-slate-200 p-8 mb-4 mt-4 rounded-lg">Não teremos agendamento hoje...</div>
                 {%endif%}
                     </div>
           </form>
           <div class="text-slate-500 font-medium border-b-2 border-slate-300 ml-2 mr-2">* Atendimentos não finalizados!</div>
           <div class=" flex items-center justify-center transition-transform duration-300 hover:scale-100 p-1">
-
               {% if not_serveds|length != 0 %}
               <div class="container-fluid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-1 mb-1  ">
                  {% for not_served in not_serveds%}
-                     <div class="flex flex-col justify-between h-24 rounded-lg bg-gradient-to-r from-orange-400 to-orange-500 shadow-lg transition-transform duration-300 hover:scale-105">
-                        <label class="mt-2 ml-2 text-white text-sm font-semibold">
-                            Protocolo: {{not_served.protocol}}
+                     <div class="flex flex-col justify-between h-24 rounded-t-lg bg-gradient-to-r from-purple-400 to-purple-500 shadow-lg transition-transform duration-300 hover:scale-105">
+                        <label class="ml-2 mt-2 text-white text-sm font-semibold">
+                            Protocolo: <span class="font-normal">{{ not_served.protocol }}</span>
                         </label>
-                        <label class="mt-2 ml-2 text-white text-sm font-semibold">
-                            {{not_served.date_at}}
+                        <label class="ml-2 mt-1 text-white text-sm font-semibold">
+                            Data: <span class="font-normal">{{ not_served.date_at }}</span>
                         </label>
-                        <label class="mt-2 ml-2 text-white text-sm font-semibold">
-                            Atendimento não realizado
+                        <label class="ml-2 mt-1 text-white text-sm font-semibold">
+                            Status: <span class="font-normal">Atendimento não realizado</span>
                         </label>
-                        <a href="{% url 'agendas_detail' pk=not_served.pk %}" class="w-full text-center text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-b-lg">
+                        <a href="{% url 'agendas_update' pk=not_served.pk %}" class="mt-3 w-full text-center text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-b-lg py-1 transition duration-200">
                             Reagendar...
                         </a>
                      </div>
                  {%endfor%}
               </div>
-
               {%else%}
               <label class="w-full text-center text-slate-500 text-sm font-semibold">
                    Agendamentos do dia...
               </label>
               {%endif%}
-
           </div>
           <div class="mb-2"></div>
       </div>

@@ -47,3 +47,9 @@ class CooperatorsForms(forms.ModelForm):
             'uf': 'UF',
         }
 
+    def __init__(self, *args, user=None, **kwargs):
+        super(CooperatorsForms, self).__init__(*args, **kwargs)
+        if self.instance.pk:  # Verifica se já existe uma instância
+            if user and not user.groups.filter(name='Administrador(a)').exists():  # Verifica se o usuário não é do grupo de administradores
+                self.fields['post'].choices = [choice for choice in self.fields['post'].choices if choice[0] == self.instance.post]
+
