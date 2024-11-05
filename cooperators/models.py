@@ -2,7 +2,7 @@ from django.db import models
 
 class CooperatorsModel(models.Model):
     choices_name = (
-        ('Admistrador(a)', 'Admistrador(a)'),
+        ('Administrador(a)', 'Administrador(a)'),
         ('Advogado(a)', 'Advogado(a)'),
         ('Recepção', 'Recepção'),
         ('Procurador(a)', 'Procurador(a)'),
